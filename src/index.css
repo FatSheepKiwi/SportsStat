@@ -1,0 +1,20 @@
+@import '~antd/dist/antd.css';
+
+.header{
+    font-family: 'Impact','New Century Schoolbook',
+     Georgia, 'New York', serif;
+    font-weight : bold;
+    font-size : 6.00em;
+    text-align: center;
+    margin-top: 3%;
+    fill-opacity: initial;
+}
+
+.basic-info{
+    margin-top: 3%;  
+}
+
+.basic-info-big-font{
+    font-size : 24px;
+    height: 40;
+}
