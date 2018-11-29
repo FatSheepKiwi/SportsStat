@@ -1,21 +1,66 @@
 import React from 'react';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import {observer,inject, Provider} from 'mobx-react';
+import axios from 'axios';
 
 const FormItem = Form.Item;
 
 
 class RegisterForm extends React.Component {
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+  // handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   this.props.form.validateFields((err, values) => {
+  //     if (!err) {
+  //       console.log('Received values of form: ', values);
+  //       this.props.store.loginModalVisible = false;
+  //       this.props.store.registerModalVisible = false;
+  //       this.props.store.userName = values.userName2;
+  //     }
+  //   });
+  // }
+
+  state = {
+    confirmDirty: false,
+  }
+
+  handleSubmit = term => {
+    this.props.form.validateFields( async (err, values) => {      
       if (!err) {
-        console.log('Received values of form: ', values);
-        this.props.store.loginModalVisible = false;
-        this.props.store.registerModalVisible = false;
-        this.props.store.userName = values.userName2;
+        const response = axios.post('/user', {
+          email: values.email,
+          password: values.password
+        }).then(res => {
+          console.log(response);
+          this.props.store.loginModalVisible = false;
+          this.props.store.registerModalVisible = false;
+          this.props.store.email = values.email;
+        }).catch(err => {
+          console.log(err);
+        });
       }
-    });
+    });    
+  }
+
+  validateToNextPassword = (rule, value, callback) => {
+    const form = this.props.form;
+    if (value && this.state.confirmDirty) {
+      form.validateFields(['confirm'], { force: true });
+    }
+    callback();
+  }
+
+  compareToFirstPassword = (rule, value, callback) => {
+    const form = this.props.form;
+    if (value && value !== form.getFieldValue('password')) {
+      callback('Two passwords that you enter is inconsistent!');
+    } else {
+      callback();
+    }
+  }
+
+  handleConfirmBlur = (e) => {
+    const value = e.target.value;
+    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
   }
 
   render() {
@@ -49,10 +94,13 @@ class RegisterForm extends React.Component {
       <Form onSubmit={this.handleSubmit}>
         <FormItem
           {...formItemLayout}
-          label="User Name"
+          label="email"
         >
-          {getFieldDecorator('userName2', {
+          {getFieldDecorator('email', {
             rules: [{
+              type: 'email', message: 'The input is not valid E-mail',
+            },
+            {
               required: true, message: 'Please input your user name',
             }],
           })(
@@ -63,7 +111,7 @@ class RegisterForm extends React.Component {
           {...formItemLayout}
           label="Password"
         >
-          {getFieldDecorator('password2', {
+          {getFieldDecorator('password', {
             rules: [{
               required: true, message: 'Please input your password!',
             }, {

@@ -1,22 +1,67 @@
 import React from 'react';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import {observer,inject, Provider} from 'mobx-react';
+import auth from '../api/auth';
+import axios from 'axios';
 
 const FormItem = Form.Item;
 
 
 class LoginForm extends React.Component {
+  
+  state = { response: [] };
+
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+
+    this.props.form.validateFields(async (err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        this.props.store.loginModalVisible = false;
-      this.props.store.registerModalVisible = false;
-      this.props.store.userName = values.userName;
+
+        // var url = "/user/login";
+        // axios.post(url, {
+        //   withCredentials:true,
+        //   data: {
+        //     email: values.email,
+        //     password: values.password
+        //   }
+        // }).then((response) => {
+        //     console.log(response);
+        //   })
+        //   .catch(function (err) {  
+        //     console.log('error'); 
+        //     console.log(err);
+        // });
+
+        axios.post('/user/login', 
+          {
+            email: values.email,
+            password: values.password
+          }
+        ).then((res) => {
+          this.props.store.loginModalVisible = false;
+          this.props.store.registerModalVisible = false;
+          console.log(res);
+          this.props.store.email = values.email;
+        }).catch(err => {
+          console.log(err);
+        }) 
       }
     });
-  }
+  }  
+
+  // handleSubmit = async () => {
+  //   console.log(values);
+  //   const response = await auth.post('/user/login', {
+  //     data: {
+  //       email: values.email,
+  //       password: values.password
+  //     }
+  //   });
+
+  //   console.log(response);
+  //   this.setState({ response: response.data });
+  // };
 
   showRegister = () => {
     console.log("show register");
@@ -28,10 +73,13 @@ class LoginForm extends React.Component {
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
         <FormItem>
-          {getFieldDecorator('userName', {
-            rules: [{ required: true, message: 'Please input your username!' }],
+          {getFieldDecorator('email', {
+            rules: [
+              { type: 'email', message: 'The input is not valid E-mail!'}, 
+              { required: true, message: 'Please input your email address!' }
+            ],
           })(
-            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+            <Input prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="email" />
           )}
         </FormItem>
         <FormItem>

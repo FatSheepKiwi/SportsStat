@@ -4,6 +4,7 @@ import {Menu, Icon } from 'antd';
 import {observer,inject, Provider } from 'mobx-react';
 import axios from 'axios';
 import SearchBar from './SearchBar';
+import faker from 'faker';
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -69,12 +70,22 @@ class NavigationBar extends React.Component {
               <Provider store = {this.props.store}>
                 <SearchBar/>
               </Provider>
-            </Menu.Item>
-            <SubMenu title={<span><Icon type="user" />{"Hi! " + this.props.store.userName}</span>}
+            </Menu.Item>            
+            <SubMenu title={<div><span><img className="ui image Mini" alt="avatar" src={faker.image.avatar()}></img></span>
+            <span><Icon type="user" />{"Hi! " + this.props.store.email}</span></div>}
             style={{margin:"0 20%"}}>
           <MenuItemGroup title="Item 1">
-            <Menu.Item key="setting:1">Subscription</Menu.Item>
-            <Menu.Item key="setting:2">Sign out</Menu.Item>
+            <Menu.Item key="setting:1">              
+              <NavLink to='/user-profile'>
+                  <Icon type="user" />Profile
+              </NavLink>
+            </Menu.Item>
+            <Menu.Item key="setting:2">
+              <Icon type="heart" />Subscription
+            </Menu.Item>
+            <Menu.Item key="setting:3">
+              <Icon type="close" />Sign out
+            </Menu.Item>
           </MenuItemGroup>
           <MenuItemGroup title="Item 2">
             <Menu.Item key="setting:3">233</Menu.Item>

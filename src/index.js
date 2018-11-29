@@ -11,6 +11,7 @@ import Schedule from './components/Schedule';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'mobx-react';
 import Store from './store/Store'
+import UserProfile from './components/UserProfile';
 
 var store = new Store();
 
@@ -22,6 +23,7 @@ ReactDOM.render((
                 <Route path="/team" component={Team} />
                 <Route path="/schedule" component={Schedule} />
                 <Route path="/player" component={Player} />
+                <Route path="/user-profile" component={UserProfile} />
                 <Route path="/" component={Home} />
             </Switch>
         </Framework>

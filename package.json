@@ -6,6 +6,7 @@
     "ant": "^0.2.0",
     "antd": "^3.10.1",
     "axios": "^0.18.0",
+    "faker": "^4.1.0",
     "highcharts": "^6.2.0",
     "highcharts-react": "0.0.3",
     "highcharts-react-official": "^1.5.2",

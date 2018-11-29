@@ -7,7 +7,7 @@ class Store {
 
     loginModalVisible = true;
     registerModalVisible = false;
-    userName = "";
+    email = "";
 }
 
 decorate(Store, {
@@ -16,8 +16,8 @@ decorate(Store, {
     loadingInfo: observable,
     loginModalVisible : observable,
     registerModalVisible : observable,
-    userName : observable
-
+    email : observable,
+    userProfileVisible: observable
 })
 
 export default Store;
