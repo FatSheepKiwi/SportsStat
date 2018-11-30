@@ -1,7 +1,6 @@
 import React from 'react';
 import { Form, Input, Tooltip, Icon, Cascader, Select, Row, message, Checkbox, Button, AutoComplete, Upload } from 'antd';
 import {observer,inject, Provider} from 'mobx-react';
-import auth from '../api/auth';
 import axios from 'axios';
 import './UserProfileForm.css';
 
@@ -84,17 +83,17 @@ class UserProfileForm extends React.Component {
     }
 
     normFile = (e) => {
-        console.log('Upload event:', e);
-        console.log(this.state.avatarName); 
-        var ext = e.file.name.substr(e.file.name.lastIndexOf("."));
-        var avatar = this.props.store.email + ext;
-        console.log(avatar);
-        this.setState({avatarName: avatar});
-        if (Array.isArray(e)) {
-            return e;
-        }
-        // const file = e.target.files[0];
-        // console.log(e.target);
+        // console.log('Upload event:', e);
+        // console.log(this.state.avatarName); 
+        // var ext = e.file.name.substr(e.file.name.lastIndexOf("."));
+        // var avatar = this.props.store.email + ext;
+        // console.log(avatar);
+        // this.setState({avatarName: avatar});
+        // if (Array.isArray(e)) {
+        //     return e;
+        // }        
+
+        // console.log(imageUrl);
         // const formData = new FormData()
         // formData.append(avatar, file, );
         // axios.post("/profile/avatar", formData)

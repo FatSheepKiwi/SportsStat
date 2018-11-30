@@ -8,7 +8,7 @@ class UserProfile extends React.Component {
   render() {
     const WrappedUserProfileForm = Form.create()(UserProfileForm);
     return (
-      <div style={{width:'50%'}}>
+      <div className="ui container">
 
         <Provider store = {this.props.store}>
             <WrappedUserProfileForm />

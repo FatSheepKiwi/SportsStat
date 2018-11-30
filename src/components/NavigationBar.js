@@ -66,13 +66,23 @@ class NavigationBar extends React.Component {
                     <Icon type="smile" />Schedule
                 </NavLink>
             </Menu.Item>
+            <Menu.Item key="Comment">
+                <NavLink to='/comment'>
+                    <Icon type="team" />Comment
+                </NavLink>
+            </Menu.Item>
+            <Menu.Item key="Topic">
+                <NavLink to='/topic'>
+                    <Icon type="team" />Topic
+                </NavLink>
+            </Menu.Item>
             <Menu.Item key="searchBar">
               <Provider store = {this.props.store}>
                 <SearchBar/>
               </Provider>
             </Menu.Item>            
-            <SubMenu title={<div><span><img className="ui image Mini" alt="avatar" src={faker.image.avatar()}></img></span>
-            <span><Icon type="user" />{"Hi! " + this.props.store.email}</span></div>}
+            <SubMenu title={<div><span><img className="ui image avatar" alt="avatar" src={faker.image.avatar()}></img></span>
+            <span>{"Hi! " + this.props.store.email}</span></div>}
             style={{margin:"0 20%"}}>
           <MenuItemGroup title="Item 1">
             <Menu.Item key="setting:1">              

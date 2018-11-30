@@ -1,7 +1,6 @@
 import React from 'react';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import {observer,inject, Provider} from 'mobx-react';
-import auth from '../api/auth';
 import axios from 'axios';
 
 const FormItem = Form.Item;
