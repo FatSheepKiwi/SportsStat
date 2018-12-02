@@ -2,7 +2,7 @@ import React from 'react';
 import {observer,inject} from 'mobx-react';
 import axios from 'axios';
 import { Form, Input, Button, Tag } from 'antd';
-import {Redirect} from 'react-router';
+import { Route, Redirect } from 'react-router-dom';
 
 const FormItem = Form.Item;
 
@@ -15,6 +15,8 @@ const tagsFromServer = ['Football', 'Soccer', 'Basketball', 'Sports'];
 class CreateTopicForm extends React.Component {
     state = {
         selectedTags: [],
+        toTopic: false,
+        toLogin: false,
     };
 
     handleSubmit = (e) => {
@@ -36,16 +38,22 @@ class CreateTopicForm extends React.Component {
                 axios.post('/topic', topic, headers)
                 .then(res => {
                     console.log(res);
-                    this.props.store.email = values.email;
-                    
+                    this.props.store.email = values.email;                    
+                    this.routeToTopic();
                 }).catch(err => {
-                    console.log(err);
                     console.log(err.response.status);
-                    this.props.store.loginModalVisible = true;
+                    if (err.response.status == 401) {
+                        this.setState.toLogin = true;
+                        this.props.store.loginModalVisible = this.state.toLogin;
+                    }                    
                 });
             }
           });
     };
+
+    routeToTopic = () => {
+        this.setState({ toTopic: true });
+    }
 
     handleChange(tag, checked) {
         const { selectedTags } = this.state;
@@ -71,6 +79,11 @@ class CreateTopicForm extends React.Component {
     const buttonItemLayout = {
       wrapperCol: { span: 14, offset: 4 },
     };
+
+    if (this.state.toTopic) {
+        return <Redirect to='/topic' />;
+    }
+
     return (
       <div>
         <Form layout={formLayout} onSubmit={this.handleSubmit}>
@@ -136,7 +149,7 @@ class CreateTopicForm extends React.Component {
           </FormItem>          
           <FormItem {...buttonItemLayout}>
             <Button type="primary" htmlType="submit">Submit</Button>
-          </FormItem>          
+          </FormItem>
         </Form>
       </div>
     );

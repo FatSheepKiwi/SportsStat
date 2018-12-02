@@ -26,6 +26,14 @@ class NavigationBar extends React.Component {
         this.props.store.loginModalVisible = true;
       }
 
+      displayUsername = () => {
+        if (this.props.store.user.username) {
+          return this.props.store.user.username;
+        } else {
+          return "welcome";
+        }
+      }
+
       fetch = () => {
         axios.defaults.withCredentials = true;
         var url = "/test";
@@ -87,7 +95,7 @@ class NavigationBar extends React.Component {
               </Provider>
             </Menu.Item>            
             <SubMenu title={<div><span><img className="ui image avatar" alt="avatar" src={faker.image.avatar()}></img></span>
-            <span>{"Hi! " + this.props.store.email}</span></div>}
+            <span>{"Hi! " + this.displayUsername()}</span></div>}
             style={{margin:"0 20%"}}>
           <MenuItemGroup title="Item 1">
             <Menu.Item key="setting:1">              

@@ -6,6 +6,7 @@ class Store {
     userPosts = [];
     userHeaders = [];
     userTopics = [];
+    user = {};
     loadingInfo = true;   
 
     loginModalVisible = false;
@@ -24,6 +25,7 @@ decorate(Store, {
     userPosts: observable,
     userHeaders: observable,
     userTopics: observable,
+    user: observable,
 })
 
 export default Store;
