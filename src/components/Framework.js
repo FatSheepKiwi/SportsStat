@@ -3,6 +3,8 @@ import { Layout} from 'antd';
 import NavigationBar from './NavigationBar';
 import {observer,inject, Provider } from 'mobx-react';
 import Background from './background.jpg';
+import Login from './Login';
+import Register from './Register';
 const { Header, Content, Footer } = Layout;
 
 
@@ -32,6 +34,14 @@ class Framework extends React.Component{
             </Content>
             <Footer style={{ textAlign: 'center' }} >
                 Sport Stats @2018
+                <div>
+                    <Provider store = {this.props.store}>
+                        <Login />
+                    </Provider>
+                    <Provider store = {this.props.store}>
+                        <Register />
+                    </Provider>
+                </div>
             </Footer>
       </Layout>
     );

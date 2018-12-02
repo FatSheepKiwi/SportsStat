@@ -17,21 +17,6 @@ class LoginForm extends React.Component {
       if (!err) {
         console.log('Received values of form: ', values);
 
-        // var url = "/user/login";
-        // axios.post(url, {
-        //   withCredentials:true,
-        //   data: {
-        //     email: values.email,
-        //     password: values.password
-        //   }
-        // }).then((response) => {
-        //     console.log(response);
-        //   })
-        //   .catch(function (err) {  
-        //     console.log('error'); 
-        //     console.log(err);
-        // });
-
         axios.post('/user/login', 
           {
             email: values.email,
@@ -42,7 +27,14 @@ class LoginForm extends React.Component {
           this.props.store.registerModalVisible = false;
           console.log(res);
           this.props.store.email = values.email;
+          if (!localStorage) {
+            console.log('local storage is not available! ');
+          } else {            
+            localStorage.setItem("x-auth", res.headers["x-auth"]);
+            console.log("store token in local storage success");
+          }
         }).catch(err => {
+          console.log("post login info have error");
           console.log(err);
         }) 
       }

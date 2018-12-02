@@ -21,6 +21,11 @@ class NavigationBar extends React.Component {
         });
       }
 
+      showLogin = () => {
+        console.log('show login');
+        this.props.store.loginModalVisible = true;
+      }
+
       fetch = () => {
         axios.defaults.withCredentials = true;
         var url = "/test";
@@ -86,14 +91,17 @@ class NavigationBar extends React.Component {
             style={{margin:"0 20%"}}>
           <MenuItemGroup title="Item 1">
             <Menu.Item key="setting:1">              
+              <span  onClick={this.showLogin}><Icon type="user" />Log In/Sign Up</span>
+            </Menu.Item>
+            <Menu.Item key="setting:2">              
               <NavLink to='/user-profile'>
                   <Icon type="user" />Profile
               </NavLink>
             </Menu.Item>
-            <Menu.Item key="setting:2">
+            <Menu.Item key="setting:3">
               <Icon type="heart" />Subscription
             </Menu.Item>
-            <Menu.Item key="setting:3">
+            <Menu.Item key="setting:4">
               <Icon type="close" />Sign out
             </Menu.Item>
           </MenuItemGroup>

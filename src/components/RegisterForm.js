@@ -5,8 +5,8 @@ import axios from 'axios';
 
 const FormItem = Form.Item;
 
-
 class RegisterForm extends React.Component {
+  
   // handleSubmit = (e) => {
   //   e.preventDefault();
   //   this.props.form.validateFields((err, values) => {
@@ -27,8 +27,9 @@ class RegisterForm extends React.Component {
     this.props.form.validateFields( async (err, values) => {      
       if (!err) {
         const response = axios.post('/user', {
-          email: values.email,
-          password: values.password
+          email: values.regemail,
+          password: values.regpassword,
+          username: values.username
         }).then(res => {
           console.log(response);
           this.props.store.loginModalVisible = false;
@@ -51,7 +52,7 @@ class RegisterForm extends React.Component {
 
   compareToFirstPassword = (rule, value, callback) => {
     const form = this.props.form;
-    if (value && value !== form.getFieldValue('password')) {
+    if (value && value !== form.getFieldValue('regpassword')) {
       callback('Two passwords that you enter is inconsistent!');
     } else {
       callback();
@@ -63,8 +64,9 @@ class RegisterForm extends React.Component {
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
   }
 
-  render() {
-    const { getFieldDecorator } = this.props.form;
+  render() {    
+    const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
+    const userNameError = isFieldTouched('username') && getFieldError('username');
 
     const formItemLayout = {
       labelCol: {
@@ -94,9 +96,21 @@ class RegisterForm extends React.Component {
       <Form onSubmit={this.handleSubmit}>
         <FormItem
           {...formItemLayout}
+          label="username"
+          validateStatus={userNameError ? 'error' : ''}
+          help={userNameError || ''}
+        >
+          {getFieldDecorator('username', {
+            rules: [{ required: true, message: 'Please input your username!' }],
+          })(
+            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="username" />
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
           label="email"
         >
-          {getFieldDecorator('email', {
+          {getFieldDecorator('regemail', {
             rules: [{
               type: 'email', message: 'The input is not valid E-mail',
             },
@@ -111,7 +125,7 @@ class RegisterForm extends React.Component {
           {...formItemLayout}
           label="Password"
         >
-          {getFieldDecorator('password', {
+          {getFieldDecorator('regpassword', {
             rules: [{
               required: true, message: 'Please input your password!',
             }, {

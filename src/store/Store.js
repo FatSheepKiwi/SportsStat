@@ -5,9 +5,10 @@ class Store {
     playerStatistic = [];
     userPosts = [];
     userHeaders = [];
+    userTopics = [];
     loadingInfo = true;   
 
-    loginModalVisible = true;
+    loginModalVisible = false;
     registerModalVisible = false;
     email = "";
 }
@@ -22,6 +23,7 @@ decorate(Store, {
     userProfileVisible: observable,
     userPosts: observable,
     userHeaders: observable,
+    userTopics: observable,
 })
 
 export default Store;

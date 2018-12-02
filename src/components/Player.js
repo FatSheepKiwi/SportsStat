@@ -12,7 +12,7 @@ import PlayerLastThreeYearBasic from './PlayerLastThreeYearBasic';
 class Player extends React.Component {
 
     getPlayerInfo = (value) => {
-        this.props.store.loading = true;
+        this.props.store.loadingInfo = true;
         value = value.trim();
         var url = "/player?playerName=" + value;
         axios.get(url, {withCredentials:true})

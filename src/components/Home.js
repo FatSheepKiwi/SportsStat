@@ -1,8 +1,7 @@
 import React from 'react';
 import {Row, Col, Card, Spin} from 'antd';
 import {observer,inject, Provider} from 'mobx-react';
-import Login from './Login';
-import Register from './Register';
+
 
 class Home extends React.Component {
 
@@ -97,12 +96,7 @@ class Home extends React.Component {
                     </Col>          
                 </Row>
             </div>
-            <Provider store = {this.props.store}>
-                <Login />
-            </Provider>
-            <Provider store = {this.props.store}>
-                <Register />
-            </Provider>
+            
             
           </div>
     );

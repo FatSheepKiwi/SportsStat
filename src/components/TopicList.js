@@ -2,6 +2,7 @@ import React from 'react';
 import { List, Avatar, Icon } from 'antd';
 import {observer,inject, Provider} from 'mobx-react';
 import faker from 'faker';
+import axios from 'axios';
 
 const listData = [];
 for (let i = 0; i < 23; i++) {
@@ -23,6 +24,25 @@ const IconText = ({ type, text }) => (
 
 class TopicList extends React.Component {
 
+    getTopics() {        
+        var headers = {};
+        if (localStorage.getItem("x-auth")) {
+            headers = {
+                "x-auth" : localStorage.getItem("x-auth")
+            };
+        }
+        axios.get('/topic/', {headers})
+        .then(response => {
+            this.props.store.userTopics = response.data;
+        })
+        .catch(err => {
+            console.log(err);
+        }) ;
+    }
+
+    componentWillMount() {
+        this.getTopics();
+    }
 
     render() {
         return (
@@ -35,8 +55,8 @@ class TopicList extends React.Component {
                 },
                 pageSize: 3,
             }}
-            dataSource={listData}
-            footer={<div><b>ant design</b> footer part</div>}
+            dataSource={this.props.store.userTopics}
+            footer={<div><b>Topics</b> footer part</div>}
             renderItem={item => (
                 <List.Item
                 key={item.title}
@@ -44,11 +64,11 @@ class TopicList extends React.Component {
                 extra={<img width={272} alt="logo" src={faker.image.image()} />}
                 >
                 <List.Item.Meta
-                    avatar={<Avatar src={item.avatar} />}
+                    avatar={<Avatar src={faker.image.avatar()} />}
                     title={<a href={item.href}>{item.title}</a>}
-                    description={item.description}
+                    description={item.author.username}
                 />
-                {item.content}
+                {item.desc}
                 </List.Item>
             )}
             />

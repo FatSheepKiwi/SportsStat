@@ -5,6 +5,10 @@ import LoginForm from './LoginForm';
 
 class Login extends React.Component {
 
+  handleCancel = () => {
+    this.props.store.loginModalVisible = false;
+  }
+
   render() {
     const WrappedLoginForm = Form.create()(LoginForm);
     return (
@@ -14,8 +18,9 @@ class Login extends React.Component {
           visible={this.props.store.loginModalVisible}
           keyboard = {false}
           footer = {null}
-          closable = {false}
+          closable = {true}
           width = {'50%'}
+          onCancel = {this.handleCancel}
         >
 
         <Provider store = {this.props.store}>
