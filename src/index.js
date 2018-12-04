@@ -14,7 +14,8 @@ import Store from './store/Store'
 import UserProfile from './components/UserProfile';
 import Comment from './components/Comment';
 import Topic from './components/Topic';
-import createTopic from './components/createTopic';
+import CreateTopic from './components/createTopic';
+import TopicDetail from './components/TopicDetail';
 
 var store = new Store();
 
@@ -27,9 +28,10 @@ ReactDOM.render((
                 <Route path="/schedule" component={Schedule} />
                 <Route path="/player" component={Player} />
                 <Route path="/user-profile" component={UserProfile} />
-                <Route path="/comment" component={Comment} />
-                <Route path="/topic" component={Topic} />
-                <Route path="/create-topic" component={createTopic} />
+                <Route exact path="/comment" component={Comment} />                
+                <Route exact path="/create-topic" component={CreateTopic} />
+                <Route exact path="/topic/:id" component={TopicDetail} />
+                <Route exact path="/topic" component={Topic} />                
                 <Route path="/" component={Home} />
             </Switch>
         </Framework>

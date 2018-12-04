@@ -11,6 +11,7 @@ class Store {
 
     loginModalVisible = false;
     registerModalVisible = false;
+    createTopicVisible = false;
     email = "";
 }
 

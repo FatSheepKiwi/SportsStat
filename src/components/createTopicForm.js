@@ -2,7 +2,7 @@ import React from 'react';
 import {observer,inject} from 'mobx-react';
 import axios from 'axios';
 import { Form, Input, Button, Tag } from 'antd';
-import { Route, Redirect } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 const FormItem = Form.Item;
 
@@ -15,7 +15,6 @@ const tagsFromServer = ['Football', 'Soccer', 'Basketball', 'Sports'];
 class CreateTopicForm extends React.Component {
     state = {
         selectedTags: [],
-        toTopic: false,
         toLogin: false,
     };
 
@@ -39,7 +38,8 @@ class CreateTopicForm extends React.Component {
                 .then(res => {
                     console.log(res);
                     this.props.store.email = values.email;                    
-                    this.routeToTopic();
+                    this.props.history.push('/topic');
+                    this.reloadPage();       
                 }).catch(err => {
                     console.log(err.response.status);
                     if (err.response.status == 401) {
@@ -51,8 +51,8 @@ class CreateTopicForm extends React.Component {
           });
     };
 
-    routeToTopic = () => {
-        this.setState({ toTopic: true });
+    reloadPage = () => {
+        window.location.reload();
     }
 
     handleChange(tag, checked) {
@@ -77,12 +77,8 @@ class CreateTopicForm extends React.Component {
     };
     const { selectedTags } = this.state;
     const buttonItemLayout = {
-      wrapperCol: { span: 14, offset: 4 },
+      wrapperCol: { span: 14, offset: 10 },
     };
-
-    if (this.state.toTopic) {
-        return <Redirect to='/topic' />;
-    }
 
     return (
       <div>
@@ -149,6 +145,9 @@ class CreateTopicForm extends React.Component {
           </FormItem>          
           <FormItem {...buttonItemLayout}>
             <Button type="primary" htmlType="submit">Submit</Button>
+            <Link to='/topic' >
+                <Button type="danger" style={{ marginLeft: 8 }} onClick={this.reloadPage}>Cancel</Button>
+            </Link>
           </FormItem>
         </Form>
       </div>
@@ -157,4 +156,4 @@ class CreateTopicForm extends React.Component {
 }
 
 CreateTopicForm = inject('store')(observer(CreateTopicForm))
-export default CreateTopicForm;
+export default withRouter(CreateTopicForm);

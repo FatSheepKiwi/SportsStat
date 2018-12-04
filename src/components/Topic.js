@@ -2,29 +2,26 @@ import React from 'react';
 import {observer,inject, Provider} from 'mobx-react';
 import TopicList from './TopicList';
 import { Icon, Button } from 'antd';
-import { NavLink, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 class Topic extends React.Component {
 
-  state = {
-    redirect: false
+  componentWillMount(){
+    this.setState({createTopic: false});    
   }
 
-  routeCreateTopic = () => {
-    this.setState({ redirect: true });
+  reloadPage = () => {
+    window.location.reload();
   }
 
-  render() {
-    if (this.state.redirect) {
-        return <Redirect to='/create-topic' />
-    }    
+  render() {  
     return (      
       <div className="ui container">
-        <NavLink to='/create-topic'>
-          <Button type="primary" icon="add" htmlType="submit" onClick={this.routeCreateTopic}>                    
-            <Icon type="add" />Create Topic          
+        <Link to='/create-topic'>
+          <Button type="primary" icon="plus" onClick={this.reloadPage}>                    
+            Create Topic
           </Button>
-        </NavLink>
+        </Link>
         <Provider store = {this.props.store}>
             <TopicList />
         </Provider>

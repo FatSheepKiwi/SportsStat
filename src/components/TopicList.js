@@ -34,6 +34,7 @@ class TopicList extends React.Component {
         axios.get('/topic/', {headers})
         .then(response => {
             this.props.store.userTopics = response.data;
+            console.log(response.data[0]);
         })
         .catch(err => {
             console.log(err);
@@ -44,9 +45,15 @@ class TopicList extends React.Component {
         this.getTopics();
     }
 
+    getDate = (str_date) => {        
+        var date = new Date(str_date);
+        return date.toLocaleString();
+    }
+
     render() {
         return (
             <List
+            bordered="true"
             itemLayout="vertical"
             size="large"
             pagination={{
@@ -65,11 +72,17 @@ class TopicList extends React.Component {
                 >
                 <List.Item.Meta
                     avatar={<Avatar src={faker.image.avatar()} />}
-                    title={<a href={item.href}>{item.title}</a>}
-                    description={item.author.username}
+                    title={
+                        <div className="content">                            
+                            <div className="date"> {this.getDate(item.date)}</div>
+                            <a className="summary" href={item.href}>{item.title}</a>
+                        </div>
+                    }
+                    description={item.author.name}                    
                 />
-                {item.desc}
+                {item.desc}                
                 </List.Item>
+                
             )}
             />
         )    
