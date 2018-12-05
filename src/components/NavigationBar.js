@@ -68,7 +68,7 @@ class NavigationBar extends React.Component {
           mode="horizontal"
           theme={this.state.theme}
         >
-          <Menu.Item key="theme" disabled="true">
+          <Menu.Item key="theme" disabled={true}>
             <Switch
               checked={this.state.theme === "dark"}
               onChange={this.changeTheme}

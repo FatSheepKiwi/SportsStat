@@ -10,7 +10,7 @@ class CreateTopic extends React.Component {
       <div className="ui container center">
         <Card
           title="Create Topic"
-          extra={<a href="#">More</a>}
+          extra={<a href="/#">More</a>}
           style={{ width: "100%" }}
         >
           <Provider store={this.props.store}>
