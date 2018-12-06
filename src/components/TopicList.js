@@ -95,12 +95,10 @@ class TopicList extends React.Component {
               <IconText type="message" text="2" />
             ]}
             extra={
-              <img
-                width={272}
-                height={100}
-                alt="logo"
-                src={faker.image.avatar()}
-              />
+              <div className="date ui label">
+                <i class="calendar alternate icon" />
+                {this.getDate(item.date)}
+              </div>
             }
           >
             <List.Item.Meta
@@ -114,8 +112,8 @@ class TopicList extends React.Component {
               }
               description={item.author.name}
             />
-            <div className="date"> {this.getDate(item.date)}</div>
-            {item.desc}
+
+            <div className="ui text">{item.desc}</div>
           </List.Item>
         )}
       />

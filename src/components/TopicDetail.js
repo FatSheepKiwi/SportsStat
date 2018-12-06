@@ -5,9 +5,11 @@ import { Comment, Icon, Button, Tooltip, Avatar } from "antd";
 import moment from "moment";
 import { Link, withRouter } from "react-router-dom";
 import CommentDetail from "./CommentDetail";
+import AddComment from "./AddComment";
 
 class TopicDetail extends React.Component {
   state = { topic: {}, likes: 0, dislikes: 0, action: null };
+
   getTopicByID = topicID => {
     // console.log(topicID);
     const url = "/topic/" + topicID;
@@ -73,7 +75,7 @@ class TopicDetail extends React.Component {
     });
   };
 
-  dislike = () => {
+  favorite = () => {
     this.setState({
       likes: 0,
       dislikes: 1,
@@ -109,26 +111,25 @@ class TopicDetail extends React.Component {
 
     const actions = [
       <span>
-        <Tooltip title="Like">
+        <Tooltip title="Favorite">
           <Icon
-            type="like"
-            theme={action === "liked" ? "filled" : "outlined"}
-            onClick={this.like}
-          />
-        </Tooltip>
-        <span style={{ paddingLeft: 8, cursor: "auto" }}>{likes}</span>
-      </span>,
-      <span>
-        <Tooltip title="Dislike">
-          <Icon
-            type="dislike"
-            theme={action === "disliked" ? "filled" : "outlined"}
+            type="star-o"
+            theme={action === "favorate" ? "filled" : "outlined"}
             onClick={this.dislike}
           />
         </Tooltip>
         <span style={{ paddingLeft: 8, cursor: "auto" }}>{dislikes}</span>
       </span>,
-      <span>Reply to</span>
+      <span>
+        <Tooltip title="Like">
+          <Icon
+            type="like-o"
+            theme={action === "liked" ? "filled" : "outlined"}
+            onClick={this.like}
+          />
+        </Tooltip>
+        <span style={{ paddingLeft: 8, cursor: "auto" }}>{likes}</span>
+      </span>
     ];
 
     // console.log(topic.date);
@@ -185,6 +186,11 @@ class TopicDetail extends React.Component {
         <Provider store={this.props.store}>
           <div className="ui content" style={{ marginLeft: 50 }}>
             {this.renderComment()}
+          </div>
+        </Provider>
+        <Provider store={this.props.store}>
+          <div className="ui container">
+            <AddComment topic_id={topic._id} />
           </div>
         </Provider>
         <div>

@@ -15,7 +15,7 @@ class Topic extends React.Component {
 
   render() {
     return (
-      <div className="ui container">
+      <div className="ui main container">
         <Link to="/create-topic">
           <Button
             type="primary"
