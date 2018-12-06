@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "ant": "^0.2.0",
-    "antd": "^3.11.0",
+    "antd": "^3.10.1",
     "axios": "^0.18.0",
     "faker": "^4.1.0",
     "highcharts": "^6.2.0",
@@ -27,7 +27,7 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "proxy": "http://localhost:3000",
+  "proxy": "https://sport-stat-server.herokuapp.com/",
   "browserslist": [
     ">0.2%",
     "not dead",
