@@ -127,7 +127,9 @@ class TopicDetail extends React.Component {
             onClick={this.dislike}
           />
         </Tooltip>
-        <span style={{ paddingLeft: 8, cursor: "auto" }}>{dislikes}</span>
+        <span style={{ paddingLeft: 8, cursor: "auto" }}>
+          {topic.favorites}
+        </span>
       </span>,
       <span>
         <Tooltip title="Like">
@@ -137,7 +139,7 @@ class TopicDetail extends React.Component {
             onClick={this.like}
           />
         </Tooltip>
-        <span style={{ paddingLeft: 8, cursor: "auto" }}>{likes}</span>
+        <span style={{ paddingLeft: 8, cursor: "auto" }}>{topic.likes}</span>
       </span>
     ];
 

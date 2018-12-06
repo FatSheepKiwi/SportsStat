@@ -96,7 +96,7 @@ class TopicList extends React.Component {
             ]}
             extra={
               <div className="date ui label">
-                <i class="calendar alternate icon" />
+                <i className="calendar alternate icon" />
                 {this.getDate(item.date)}
               </div>
             }
