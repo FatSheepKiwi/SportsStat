@@ -96,7 +96,7 @@ class CreateTopicForm extends React.Component {
                 },
                 {
                   required: true,
-                  message: "Please input your user name"
+                  message: "Please input topic title"
                 }
               ]
             })(<Input placeholder="title" />)}

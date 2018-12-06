@@ -8,7 +8,7 @@ import CommentDetail from "./CommentDetail";
 import AddComment from "./AddComment";
 
 class TopicDetail extends React.Component {
-  state = { topic: {}, likes: 0, dislikes: 0, action: null };
+  state = { topic: {}, liked: false, favorited: false, action: null };
 
   getTopicByID = topicID => {
     // console.log(topicID);
@@ -17,7 +17,12 @@ class TopicDetail extends React.Component {
       .get(url)
       .then(res => {
         console.log(res);
-        this.setState({ topic: res.data });
+        const result = res.data;
+        this.setState({
+          topic: result,
+          liked: result.liked,
+          favorited: result.favorited
+        });
       })
       .catch(err => {
         console.log(`fetch ${topicID} failed!`);
@@ -68,19 +73,23 @@ class TopicDetail extends React.Component {
   };
 
   like = () => {
-    this.setState({
-      likes: 1,
-      dislikes: 0,
-      action: "liked"
-    });
+    if (this.state.liked) {
+      return;
+    }
+    axios
+      .post(`/topic/${this.state.topic._id}/like`)
+      .then(result => {})
+      .catch(err => {});
   };
 
   favorite = () => {
-    this.setState({
-      likes: 0,
-      dislikes: 1,
-      action: "disliked"
-    });
+    if (this.state.favorited) {
+      return;
+    }
+    axios
+      .post(`/topic/${this.state.topic._id}/favorite`)
+      .then(result => {})
+      .catch(err => {});
   };
 
   routeBack = () => {};
@@ -114,7 +123,7 @@ class TopicDetail extends React.Component {
         <Tooltip title="Favorite">
           <Icon
             type="star-o"
-            theme={action === "favorate" ? "filled" : "outlined"}
+            theme={action === "favorite" ? "filled" : "outlined"}
             onClick={this.dislike}
           />
         </Tooltip>
