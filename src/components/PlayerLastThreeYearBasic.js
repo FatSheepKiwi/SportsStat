@@ -1,85 +1,144 @@
-import React from 'react';
-import {observer,inject, Provider} from 'mobx-react';
-import Highcharts from 'highcharts'
-import HighchartsReact from 'highcharts-react-official'
+import React from "react";
+import { Select, Radio, Spin } from "antd";
+import { observer, inject, Provider } from "mobx-react";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
 
+const TABS = ["PTS", "REB", "AST", "STL", "BLK"];
+
+const MAP = {
+  PTS: "Points",
+  REB: "Rebounds",
+  AST: "Assists",
+  STL: "steals",
+  BLK: "blocks"
+};
+
+const TITLE_MAP = {
+  PTS: "Points",
+  REB: "Rebounds",
+  AST: "Assists",
+  STL: "Steals",
+  BLK: "Blocks"
+};
 
 class PlayerLastThreeYearBasic extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-		  	options: {},
-		}
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      tab: TABS[0]
+    };
+  }
 
-	componentDidMount(){
-		this.setState({
-			options: {
-                chart: {
-                    type: 'column'
-                },
-                title: {
-                    text: 'Last Three Year Basic statistic'
-                },
-                subtitle: {
-                    text: 'with score, rebound, assist, steal and block'
-                },
-                xAxis: {
-                    categories: [
-                        'Score',
-                        'Rebound',
-                        'Assist',
-                        'Steal',
-                        'Block',
-                    ],
-                    crosshair: true
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'value'
-                    }
-                },
-                tooltip: {
-                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                        '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                    footerFormat: '</table>',
-                    shared: true,
-                    useHTML: true
-                },
-                plotOptions: {
-                    column: {
-                        pointPadding: 0.2,
-                        borderWidth: 0
-                    }
-                },
-                series: [{
-                    name: '2015-2016',
-                    data: [29.0, 6.1, 7.5, 1.7, 0.5] 
-            
-                }, {
-                    name: '2016-2017',
-                    data: [29.1, 8.1, 11.2, 1.5, 0.6]            
-                }, {
-                    name: '2017-2018',
-                    data: [30.4, 5.4, 8.8, 1.8, 0.7]      
-                }]
+  getCurSeasonTotalData = element => {
+    var curSeason = {
+      name: element.seasonID,
+      y: parseInt(element.gamePlayed * element[MAP[this.state.tab]])
+    };
+    return curSeason;
+  };
+
+  getCareerTotalData = () => {
+    var res = [];
+    // var totalPoints = 0, totalRebounds = 0, totalAssists = 0, totalBlocks = 0, totalSteals = 0;
+    var curSeasonState = this.props.seasonState;
+    this.props.store.playerStatistic.forEach(element => {
+      if (curSeasonState === "Regular") {
+        if (element.statType === "RegularSeason") {
+          var curSeasonTotal = this.getCurSeasonTotalData(element);
+          res.push(curSeasonTotal);
+        }
+      } else if (curSeasonState === "Post") {
+        if (element.statType === "PostSeason") {
+          var curSeasonTotal = this.getCurSeasonTotalData(element);
+          res.push(curSeasonTotal);
+        }
+      } else if (curSeasonState === "AllStar") {
+        if (element.statType === "AllStarSeason") {
+          var curSeasonTotal = this.getCurSeasonTotalData(element);
+          res.push(curSeasonTotal);
+        }
+      } else if (curSeasonState === "Pre") {
+        if (element.statType === "PreSeason") {
+          var curSeasonTotal = this.getCurSeasonTotalData(element);
+          res.push(curSeasonTotal);
+        }
+      }
+    });
+    return res;
+  };
+
+  onTabChange = e => {
+    console.log(e);
+    this.setState({
+      tab: e.target.value
+    });
+  };
+
+  render() {
+    const options = {
+      chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: "pie"
+      },
+      title: {
+        text:
+          this.props.store.playerData.playerFirstName +
+          " " +
+          this.props.store.playerData.playerLastName +
+          " total " +
+          TITLE_MAP[this.state.tab] +
+          " per season"
+      },
+      tooltip: {
+        pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>"
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: "pointer",
+          dataLabels: {
+            enabled: true,
+            format: "<b>{point.name}</b>: {point.percentage:.1f} %",
+            style: {
+              color:
+                (Highcharts.theme && Highcharts.theme.contrastTextColor) ||
+                "black"
             }
-        });
-    }
+          }
+        }
+      },
+      series: [
+        {
+          name: "Seasons",
+          colorByPoint: true,
+          data: this.getCareerTotalData()
+        }
+      ]
+    };
 
-  	render() {
-    	return (
-        	<div>
-            	<HighchartsReact
-                    highcharts={Highcharts}
-                    options={this.state.options}
-                />
-      		</div>
-    	);
-  	}
+    return (
+      <div>
+        <div>
+          <Radio.Group value={this.state.tab} onChange={this.onTabChange}>
+            <Radio.Button value="PTS">PTS</Radio.Button>
+            <Radio.Button value="REB">REB</Radio.Button>
+            <Radio.Button value="AST">AST</Radio.Button>
+            <Radio.Button value="BLK">BLK</Radio.Button>
+            <Radio.Button value="STL">STL</Radio.Button>
+          </Radio.Group>
+        </div>
+        <div>
+          <Spin spinning={this.props.store.loadingInfo}>
+            <HighchartsReact highcharts={Highcharts} options={options} />
+          </Spin>
+        </div>
+      </div>
+    );
+  }
 }
 
-PlayerLastThreeYearBasic = inject('store')(observer(PlayerLastThreeYearBasic))
+PlayerLastThreeYearBasic = inject("store")(observer(PlayerLastThreeYearBasic));
 export default PlayerLastThreeYearBasic;
