@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Switch, Route } from "react-router";
+import { Switch, Route, Redirect } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import Framework from "./components/Framework";
@@ -32,6 +32,7 @@ ReactDOM.render(
           <Route exact path="/topic" component={Topic} />
           <Route exact path="/topic/:id" component={TopicDetail} />
           <Route path="/" component={Home} />
+          <Redirect to="/" />
         </Switch>
       </Framework>
     </Provider>

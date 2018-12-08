@@ -111,18 +111,18 @@ class PlayerDataTable extends React.Component {
       },
       {
         title: "TO",
+        dataIndex: "blocks",
+        key: "blocks"
+      },
+      {
+        title: "STL",
         dataIndex: "turnovers",
         key: "turnovers"
       },
       {
-        title: "STL",
+        title: "BLK",
         dataIndex: "steals",
         key: "steals"
-      },
-      {
-        title: "BLK",
-        dataIndex: "blocks",
-        key: "blocks"
       },
       {
         title: "PF",
@@ -137,9 +137,11 @@ class PlayerDataTable extends React.Component {
     ];
 
     return (
-      <div>
-        <div>
-          <span>Type: </span>
+      <div style={{ paddingTop: 10 }}>
+        <div style={{ paddingBottom: 10 }}>
+          <span style={{ paddingLeft: 10, fontWeight: "bold" }}>
+            Season Type:{" "}
+          </span>
           <Radio.Group
             value={this.state.seasonSelect}
             onChange={this.handleDataSourceChange}

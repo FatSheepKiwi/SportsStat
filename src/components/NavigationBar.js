@@ -12,7 +12,8 @@ const MenuItemGroup = Menu.ItemGroup;
 class NavigationBar extends React.Component {
   state = {
     current: "/",
-    theme: "dark"
+    theme: "dark",
+    user: {}
   };
 
   changeTheme = value => {
@@ -34,10 +35,18 @@ class NavigationBar extends React.Component {
   };
 
   displayUsername = () => {
-    if (this.props.store.user.username) {
-      return this.props.store.user.username;
+    if (this.state.user.username) {
+      return this.state.user.username;
     } else {
       return "welcome";
+    }
+  };
+
+  displayUserAvatar = () => {
+    if (this.state.user.avatar) {
+      return this.state.user.avatar;
+    } else {
+      return "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png";
     }
   };
 
@@ -53,8 +62,21 @@ class NavigationBar extends React.Component {
       });
   };
 
+  fetchUser = () => {
+    SportStatServer.get()
+      .then(foundUser => {
+        this.setState({ user: foundUser });
+        this.props.store.user = foundUser;
+        console.log(foundUser);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   componentDidMount() {
     //this.fetch();
+    // this.fetchUser();
   }
 
   render() {
@@ -122,7 +144,7 @@ class NavigationBar extends React.Component {
                   <img
                     className="ui image avatar"
                     alt="avatar"
-                    src={faker.image.avatar()}
+                    src={this.displayUserAvatar()}
                   />
                 </span>
                 <span>{"Hi! " + this.displayUsername()}</span>

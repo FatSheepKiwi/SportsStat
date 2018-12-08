@@ -5,6 +5,7 @@ import SportStatServer from "../apis/sportStatServer";
 import PlayerDataTable from "./PlayerDataTable";
 import PlayerCareerScore from "./PlayerCareerScore";
 import PlayerLastThreeYearBasic from "./PlayerLastThreeYearBasic";
+import PlayerPerformance from "./PlayerPerformance";
 
 class Player extends React.Component {
   constructor(props) {
@@ -62,21 +63,33 @@ class Player extends React.Component {
       width: "25%",
       height: 25,
       textAlign: "center",
-      fontWeight: "bold"
+      fontWeight: "bold",
+      fontSize: "15px"
     };
     const gridStyleBig = {
       width: "50%",
       height: 25,
       textAlign: "center",
-      fontWeight: "bold"
+      fontWeight: "bold",
+      fontSize: "15px"
+    };
+    const imgStyle = {
+      paddingTop: 20
+    };
+    const cardStyle = {
+      paddingTop: 20
+    };
+    const performanceStyle = {
+      paddingBottom: 10
     };
 
     return (
-      <div style={{ background: "#FFFFFF", padding: "10px" }}>
+      <div>
         <Spin spinning={this.props.store.loadingInfo}>
-          <Row>
-            <Col span={6}>
+          <Row style={{ backgroundColor: "rgba(0,0,139,0.2)" }}>
+            <Col span={5}>
               <img
+                style={imgStyle}
                 src={this.props.store.playerData.playerImgUrl}
                 alt={
                   this.props.store.playerData.playerFirstName +
@@ -85,7 +98,7 @@ class Player extends React.Component {
                 }
               />
             </Col>
-            <Col span={18}>
+            <Col style={cardStyle} span={13}>
               <Card title="Player Basic Info">
                 <Card.Grid style={gridStyle}>
                   {this.props.store.playerData.playerFirstName +
@@ -124,6 +137,11 @@ class Player extends React.Component {
                 </Card.Grid>
               </Card>
             </Col>
+            <Col style={performanceStyle} span={6}>
+              <Provider store={this.props.store}>
+                <PlayerPerformance setSeasonState={this.setSeasonState} />
+              </Provider>
+            </Col>
           </Row>
         </Spin>
         <Row>
@@ -131,7 +149,7 @@ class Player extends React.Component {
             <PlayerDataTable setSeasonState={this.setSeasonState} />
           </Provider>
         </Row>
-        <Row gutter={16}>
+        <Row gutter={16} style={{ paddingTop: 10 }}>
           <Col span={12}>
             <Provider store={this.props.store}>
               <PlayerCareerScore seasonState={this.state.seasonState} />
