@@ -3,6 +3,7 @@ import { decorate, observable } from "mobx";
 class Store {
   playerData = [];
   playerStatistic = [];
+  teamBasicInfo = [];
   userPosts = [];
   userHeaders = [];
   userTopics = {};
@@ -17,6 +18,7 @@ class Store {
 
 decorate(Store, {
   playerData: observable,
+  teamBasicInfo: observable,
   playerStatistic: observable,
   loadingInfo: observable,
   loginModalVisible: observable,
