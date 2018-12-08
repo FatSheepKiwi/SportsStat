@@ -35,8 +35,9 @@ class NavigationBar extends React.Component {
   };
 
   displayUsername = () => {
-    if (this.state.user.username) {
-      return this.state.user.username;
+    console.log(this.state.user.email);
+    if (this.state.user.email) {
+      return this.state.user.email;
     } else {
       return "welcome";
     }
@@ -63,11 +64,11 @@ class NavigationBar extends React.Component {
   };
 
   fetchUser = () => {
-    SportStatServer.get()
-      .then(foundUser => {
-        this.setState({ user: foundUser });
-        this.props.store.user = foundUser;
-        console.log(foundUser);
+    SportStatServer.get("/profile/me")
+      .then(response => {
+        this.setState({ user: response.data });
+        this.props.store.user = response.data;
+        console.log(response.data);
       })
       .catch(err => {
         console.log(err);
@@ -76,7 +77,7 @@ class NavigationBar extends React.Component {
 
   componentDidMount() {
     //this.fetch();
-    // this.fetchUser();
+    this.fetchUser();
   }
 
   render() {

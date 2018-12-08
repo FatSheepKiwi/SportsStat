@@ -1,6 +1,5 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
-import axios from "axios";
 import SportStatServer from "../apis/sportStatServer";
 import { Form, Input, Button, Tag } from "antd";
 import { Link, withRouter } from "react-router-dom";
@@ -28,14 +27,8 @@ class CreateTopicForm extends React.Component {
           desc: values.desc,
           content: values.content
         };
-        const headers = {
-          headers: {
-            "x-auth": localStorage.getItem("x-auth")
-          }
-        };
-        console.log("x-auth:" + localStorage.getItem("x-auth"));
         console.log("start post topic");
-        SportStatServer.post("/topic", topic, headers)
+        SportStatServer.post("/topic", topic)
           .then(res => {
             console.log(res);
             this.props.store.userTopics = res;
