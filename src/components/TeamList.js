@@ -2,10 +2,11 @@ import React from "react";
 import { List, Table, Icon } from "antd";
 import { observer, inject } from "mobx-react";
 
-const IconText = ({ type, text }) => (
+const IconText = ({ type, href }) => (
   <span>
-    <Icon type={type} style={{ marginRight: 8 }} />
-    {text}
+    <a href={href}>
+      <Icon type={type} style={{ marginRight: 8 }} />
+    </a>
   </span>
 );
 
@@ -60,6 +61,11 @@ class TeamList extends React.Component {
           renderItem={item => (
             <List.Item
               key={item.teamID}
+              actions={[
+                <IconText type="facebook" href={item.teamFackbookLink} />,
+                <IconText type="twitter" href={item.teamTwitterLink} />,
+                <IconText type="instagram" href={item.teamInstagramLink} />
+              ]}
               extra={
                 <img
                   width={272}
