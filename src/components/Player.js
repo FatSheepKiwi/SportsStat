@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col, Card, Spin } from "antd";
 import { observer, inject, Provider } from "mobx-react";
-import axios from "axios";
+import SportStatServer from "../apis/sportStatServer";
 import PlayerDataTable from "./PlayerDataTable";
 import PlayerCareerScore from "./PlayerCareerScore";
 import PlayerLastThreeYearBasic from "./PlayerLastThreeYearBasic";
@@ -26,8 +26,7 @@ class Player extends React.Component {
     this.props.store.loading = true;
     value = value.trim();
     var url = "/player?playerName=" + value;
-    axios
-      .get(url, { withCredentials: true })
+    SportStatServer.get(url)
       .then(response => {
         console.log(response.data);
         this.props.store.playerData = response.data;
@@ -38,10 +37,9 @@ class Player extends React.Component {
         console.log(err);
       });
 
-    axios.defaults.withCredentials = true;
+    // axios.defaults.withCredentials = true;
     url = "/player/average?playerName=" + value;
-    axios
-      .get(url, { withCredentials: true })
+    SportStatServer.get(url)
       .then(response => {
         console.log(response.data);
         this.props.store.playerStatistic = response.data;

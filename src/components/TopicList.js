@@ -2,7 +2,7 @@ import React from "react";
 import { List, Avatar, Icon } from "antd";
 import { observer, inject, Provider } from "mobx-react";
 import faker from "faker";
-import axios from "axios";
+import SportStatServer from "../apis/sportStatServer";
 import { Link } from "react-router-dom";
 import _ from "lodash";
 import TopicDetail from "./TopicDetail";
@@ -32,8 +32,7 @@ class TopicList extends React.Component {
     topics: {}
   };
   getTopics() {
-    axios
-      .get("/topic")
+    SportStatServer.get("/topic")
       .then(response => {
         console.log("after get topic");
         this.setState({ topics: response.data });

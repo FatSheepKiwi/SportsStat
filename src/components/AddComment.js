@@ -3,7 +3,7 @@ import { Comment, Avatar, Form, Button, List, Input } from "antd";
 import moment from "moment";
 import { observer, inject, Provider } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
-import axios from "axios";
+import SportStatServer from "../apis/sportStatServer";
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -55,8 +55,7 @@ class AddComment extends React.Component {
     };
     console.log(this.state.value);
 
-    axios
-      .post(`/topic/comment/${this.props.topic_id}`, body, headers)
+    SportStatServer.post(`/topic/comment/${this.props.topic_id}`, body, headers)
       .then(result => {
         this.setState({ submitting: false });
         console.log(this.props.topic_id);

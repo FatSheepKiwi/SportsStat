@@ -1,6 +1,6 @@
 import React from "react";
 import { observer, inject, Provider } from "mobx-react";
-import axios from "axios";
+import SportStatServer from "../apis/sportStatServer";
 import { Comment, Icon, Button, Tooltip, Avatar } from "antd";
 import moment from "moment";
 import { Link, withRouter } from "react-router-dom";
@@ -13,8 +13,7 @@ class TopicDetail extends React.Component {
   getTopicByID = topicID => {
     // console.log(topicID);
     const url = "/topic/" + topicID;
-    axios
-      .get(url)
+    SportStatServer.get(url)
       .then(res => {
         console.log(res);
         const result = res.data;
@@ -41,8 +40,7 @@ class TopicDetail extends React.Component {
       }
     };
     const url = `/topic/${this.state.topic._id}`;
-    axios
-      .delete(url, headers)
+    SportStatServer.delete(url, headers)
       .then(res => {
         console.log("success delete topic" + this.state.topic._id);
       })
@@ -76,8 +74,7 @@ class TopicDetail extends React.Component {
     if (this.state.liked) {
       return;
     }
-    axios
-      .post(`/topic/${this.state.topic._id}/like`)
+    SportStatServer.post(`/topic/${this.state.topic._id}/like`)
       .then(result => {})
       .catch(err => {});
   };
@@ -86,8 +83,7 @@ class TopicDetail extends React.Component {
     if (this.state.favorited) {
       return;
     }
-    axios
-      .post(`/topic/${this.state.topic._id}/favorite`)
+    SportStatServer.post(`/topic/${this.state.topic._id}/favorite`)
       .then(result => {})
       .catch(err => {});
   };

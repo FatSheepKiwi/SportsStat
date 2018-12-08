@@ -1,6 +1,6 @@
 import React from "react";
 import { AutoComplete } from "antd";
-import axios from "axios";
+import SportStatServer from "../apis/sportStatServer";
 import { observer, inject, Provider } from "mobx-react";
 import _ from "lodash";
 
@@ -23,10 +23,8 @@ class SearchBar extends React.Component {
     this.props.store.loading = true;
     value = value.trim();
     console.log("select " + value);
-    axios.defaults.withCredentials = true;
     var url = "/player?playerName=" + value;
-    axios
-      .get(url, { withCredentials: true })
+    SportStatServer.get(url, { withCredentials: true })
       .then(response => {
         console.log(response.data);
         this.props.store.playerData = response.data;
@@ -36,11 +34,8 @@ class SearchBar extends React.Component {
         console.log("error");
         console.log(err);
       });
-
-    axios.defaults.withCredentials = true;
     url = "/player/average?playerName=" + value;
-    axios
-      .get(url, { withCredentials: true })
+    SportStatServer.get(url, { withCredentials: true })
       .then(response => {
         console.log(response.data);
         this.props.store.playerStatistic = response.data;
@@ -52,10 +47,9 @@ class SearchBar extends React.Component {
   };
 
   fetchAll = () => {
-    axios.defaults.withCredentials = true;
+    // axios.defaults.withCredentials = true;
     var url = "/player/all-name";
-    axios
-      .get(url, { withCredentials: true })
+    SportStatServer.get(url)
       .then(response => {
         const uniquePlayerNames = _.uniqBy(response.data, "playerName");
         console.log("get player names:" + _.size(uniquePlayerNames));

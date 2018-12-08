@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { Menu, Icon, Switch } from "antd";
 import { observer, inject, Provider } from "mobx-react";
-import axios from "axios";
+import SportStatServer from "../apis/sportStatServer";
 import SearchBar from "./SearchBar";
 import faker from "faker";
 
@@ -42,10 +42,8 @@ class NavigationBar extends React.Component {
   };
 
   fetch = () => {
-    axios.defaults.withCredentials = true;
     var url = "/test";
-    axios
-      .get(url, { withCredentials: true })
+    SportStatServer.get(url)
       .then(response => {
         console.log(response);
       })
