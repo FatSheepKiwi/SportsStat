@@ -49,10 +49,6 @@ class Login extends React.Component {
             <WrappedLoginForm />
           </Provider>
 
-          <Button type="primary" block onClick={this.handleSubmit}>
-            Login with Google
-          </Button>
-
           <GoogleLogin
             clientId="654921049052-m752jqhhpe529qssr10rpeghbj61s2uv.apps.googleusercontent.com"
             buttonText="LoginGoogle"

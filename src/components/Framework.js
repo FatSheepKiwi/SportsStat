@@ -5,10 +5,10 @@ import { observer, inject, Provider } from "mobx-react";
 import Background from "./background.jpg";
 import Login from "./Login";
 import Register from "./Register";
+
 const { Header, Content, Footer } = Layout;
 
-class Framework extends React.Component {  
-
+class Framework extends React.Component {
   render() {
     //console.log("test render");
     return (
@@ -21,7 +21,12 @@ class Framework extends React.Component {
             height: 100
           }}
         >
-          <p className={"header"}>Sport Stat</p>
+          <h1
+            className="ui center aligned header"
+            style={{ color: "#696969", opacity: 0.8 }}
+          >
+            Sport Stat
+          </h1>
         </Header>
         <Provider store={this.props.store}>
           <NavigationBar />

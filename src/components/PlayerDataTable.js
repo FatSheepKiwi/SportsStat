@@ -147,8 +147,8 @@ class PlayerDataTable extends React.Component {
             onChange={this.handleDataSourceChange}
           >
             <Radio.Button value="Regular">RegularSeason</Radio.Button>
-            <Radio.Button value="Post">PostSeason</Radio.Button>
-            <Radio.Button value="AllStar">AllStarSeason</Radio.Button>
+            <Radio.Button value="Post">Playoffs</Radio.Button>
+            <Radio.Button value="AllStar">AllStar</Radio.Button>
             <Radio.Button value="Pre">PreSeason</Radio.Button>
           </Radio.Group>
         </div>

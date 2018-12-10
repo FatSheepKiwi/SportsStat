@@ -4,7 +4,6 @@ import { Menu, Icon, Switch } from "antd";
 import { observer, inject, Provider } from "mobx-react";
 import SportStatServer from "../apis/sportStatServer";
 import SearchBar from "./SearchBar";
-import faker from "faker";
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -12,7 +11,7 @@ const MenuItemGroup = Menu.ItemGroup;
 class NavigationBar extends React.Component {
   state = {
     current: "/",
-    theme: "dark",
+    theme: "light",
     user: {}
   };
 
@@ -32,6 +31,40 @@ class NavigationBar extends React.Component {
   showLogin = () => {
     console.log("show login");
     this.props.store.loginModalVisible = true;
+  };
+
+  displayAuthItem = () => {
+    if (!this.props.store.user.email) {
+      return (
+        <span onClick={this.showLogin}>
+          <Icon type="user" />
+          Login/Signup
+        </span>
+      );
+    } else {
+      return (
+        <span onClick={this.signOut}>
+          <Icon type="close" />
+          Sign out
+        </span>
+      );
+    }
+  };
+
+  reloadPage = () => {
+    window.location.reload();
+  };
+
+  signOut = () => {
+    SportStatServer.get("/user/logout")
+      .then(res => {
+        console.log(res);
+        this.props.store.user = {};
+        this.setState({ user: {} });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   displayUsername = () => {
@@ -148,12 +181,7 @@ class NavigationBar extends React.Component {
             style={{ float: "right" }}
           >
             <MenuItemGroup title="Item 1">
-              <Menu.Item key="setting:1">
-                <span onClick={this.showLogin}>
-                  <Icon type="user" />
-                  Login/Signup
-                </span>
-              </Menu.Item>
+              <Menu.Item key="setting:1">{this.displayAuthItem()}</Menu.Item>
               <Menu.Item key="setting:2">
                 <NavLink to="/user-profile">
                   <Icon type="user" />
@@ -163,10 +191,6 @@ class NavigationBar extends React.Component {
               <Menu.Item key="setting:3">
                 <Icon type="heart" />
                 Subscription
-              </Menu.Item>
-              <Menu.Item key="setting:4">
-                <Icon type="close" />
-                Sign out
               </Menu.Item>
             </MenuItemGroup>
           </SubMenu>

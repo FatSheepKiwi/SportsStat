@@ -8,9 +8,7 @@ class GoogleLogin extends React.Component {
   handleSubmit = () => {
     SportStatServer.get("/auth/google/")
       .then(response => {
-        this.props.store.loginModalVisible = false;
-        this.props.store.registerModalVisible = false;
-        console.log(response);
+        console.log("after response: " + response);
       })
       .catch(err => {
         console.log(err);
@@ -19,7 +17,9 @@ class GoogleLogin extends React.Component {
 
   render() {
     const responseGoogle = response => {
-      console.log(response);
+      this.props.store.loginModalVisible = false;
+      this.props.store.registerModalVisible = false;
+      console.log("onSuccess: " + response);
     };
     return (
       <div>

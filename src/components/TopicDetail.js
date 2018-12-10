@@ -34,13 +34,8 @@ class TopicDetail extends React.Component {
       console.log("nothing to delete!");
       return;
     }
-    const headers = {
-      headers: {
-        "x-auth": localStorage.getItem("x-auth")
-      }
-    };
     const url = `/topic/${this.state.topic._id}`;
-    SportStatServer.delete(url, headers)
+    SportStatServer.delete(url)
       .then(res => {
         console.log("success delete topic" + this.state.topic._id);
       })
@@ -75,7 +70,9 @@ class TopicDetail extends React.Component {
       return;
     }
     SportStatServer.post(`/topic/${this.state.topic._id}/like`)
-      .then(result => {})
+      .then(result => {
+        this.setState({ liked: true });
+      })
       .catch(err => {});
   };
 
@@ -84,7 +81,9 @@ class TopicDetail extends React.Component {
       return;
     }
     SportStatServer.post(`/topic/${this.state.topic._id}/favorite`)
-      .then(result => {})
+      .then(result => {
+        this.setState({ favorited: true });
+      })
       .catch(err => {});
   };
 
@@ -118,9 +117,9 @@ class TopicDetail extends React.Component {
       <span>
         <Tooltip title="Favorite">
           <Icon
-            type="star-o"
-            theme={action === "favorite" ? "filled" : "outlined"}
-            onClick={this.dislike}
+            type="star"
+            theme={this.state.favorited === true ? "filled" : "outlined"}
+            onClick={this.favorite}
           />
         </Tooltip>
         <span style={{ paddingLeft: 8, cursor: "auto" }}>
@@ -130,8 +129,8 @@ class TopicDetail extends React.Component {
       <span>
         <Tooltip title="Like">
           <Icon
-            type="like-o"
-            theme={action === "liked" ? "filled" : "outlined"}
+            type="like"
+            theme={this.state.liked === true ? "filled" : "outlined"}
             onClick={this.like}
           />
         </Tooltip>
@@ -159,7 +158,7 @@ class TopicDetail extends React.Component {
             icon="close"
             onClick={this.deleteTopic}
           >
-            Update
+            Delete
           </Button>
         </div>
         <Comment

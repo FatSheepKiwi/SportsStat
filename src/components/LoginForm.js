@@ -24,6 +24,7 @@ class LoginForm extends React.Component {
             this.props.store.registerModalVisible = false;
             console.log(res);
             this.props.store.user = res.data;
+            this.reloadPage();
           })
           .catch(err => {
             console.log("post login info have error");
@@ -31,6 +32,10 @@ class LoginForm extends React.Component {
           });
       }
     });
+  };
+
+  reloadPage = () => {
+    window.location.reload();
   };
 
   // handleSubmit = async () => {

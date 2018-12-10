@@ -42,12 +42,6 @@ class AddComment extends React.Component {
       submitting: true
     });
 
-    const headers = {
-      headers: {
-        "x-auth": localStorage.getItem("x-auth")
-      }
-    };
-
     const body = {
       comment: {
         content: this.state.value
@@ -55,7 +49,7 @@ class AddComment extends React.Component {
     };
     console.log(this.state.value);
 
-    SportStatServer.post(`/topic/comment/${this.props.topic_id}`, body, headers)
+    SportStatServer.post(`/topic/comment/${this.props.topic_id}`, body)
       .then(result => {
         this.setState({ submitting: false });
         console.log(this.props.topic_id);
