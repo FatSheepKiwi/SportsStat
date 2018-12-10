@@ -1,6 +1,7 @@
 import React from "react";
 import { List, Table, Icon } from "antd";
 import { observer, inject } from "mobx-react";
+import { Link } from "react-router-dom";
 
 const IconText = ({ type, href }) => (
   <span>
@@ -39,8 +40,12 @@ const columns = [
 ];
 
 class TeamList extends React.Component {
+  reloadPage = () => {
+    window.location.reload();
+  };
+
   render() {
-    const teamBasicInfo = this.props.teamBasicInfo;
+    const teamBasicInfos = this.props.store.teamBasicInfos;
     return (
       <div>
         <List
@@ -52,7 +57,7 @@ class TeamList extends React.Component {
             },
             pageSize: 8
           }}
-          dataSource={teamBasicInfo}
+          dataSource={teamBasicInfos}
           footer={
             <div>
               <b>team</b> footer part
@@ -77,7 +82,9 @@ class TeamList extends React.Component {
             >
               <List.Item.Meta
                 title={
-                  <a href={item.teamTwitterLink}>{"Team:" + item.teamName}</a>
+                  <Link to={`/team/${item.teamID}`} onClick={this.reloadPage}>
+                    {"Team:" + item.teamName}
+                  </Link>
                 }
                 description={"City:" + item.teamCity}
               />

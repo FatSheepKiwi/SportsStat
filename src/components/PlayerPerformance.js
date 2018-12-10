@@ -1,6 +1,6 @@
 import React from "react";
-import { Radio, Spin } from "antd";
-import { observer, inject, Provider } from "mobx-react";
+import { Spin } from "antd";
+import { observer, inject } from "mobx-react";
 import { Radar } from "react-chartjs-2";
 
 class PlayerPerformance extends React.Component {
@@ -168,11 +168,11 @@ class PlayerPerformance extends React.Component {
     };
 
     const chartData = {
-      labels: ["Points", "Rebounds", "Assists", "Blocks", "Steals"],
+      labels: ["PTS", "REB", "AST", "BLK", "STL"],
       datasets: [
         {
-          borderColor: "rgba(135,206,250, 1)",
-          backgroundColor: "rgba(75,192,192,0.4)",
+          borderColor: "rgba(120, 120, 120, 0.4)",
+          backgroundColor: "rgba(223, 83, 83, 0.8)",
           borderWidth: 2,
           pointColor: "rgba(0,0,0,1)",
           pointStyle: "triangle",

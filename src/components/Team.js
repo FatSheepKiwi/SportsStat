@@ -6,11 +6,12 @@ import TeamList from "./TeamList";
 import SportStatServer from "../apis/sportStatServer";
 
 class Team extends React.Component {
+  state = { loading: true };
   fetchTeamBasicInfo = () => {
     SportStatServer.get("/team")
       .then(results => {
-        console.log(results.data);
-        this.props.store.teamBasicInfo = results.data;
+        this.setState({ loading: false });
+        this.props.store.teamBasicInfos = results.data;
       })
       .catch(err => {
         console.log(err);
@@ -22,10 +23,20 @@ class Team extends React.Component {
   }
 
   render() {
+    if (this.state.loading) {
+      return (
+        <div className="ui segment">
+          <div className="ui active inverted dimmer">
+            <div className="ui text loader">Loading</div>
+          </div>
+          <p />
+        </div>
+      );
+    }
     return (
       <div className="ui container">
         <Provider store={this.props.store}>
-          <TeamList teamBasicInfo={this.props.store.teamBasicInfo} />
+          <TeamList teamBasicInfos={this.props.store.teamBasicInfos} />
         </Provider>
       </div>
     );

@@ -23,13 +23,7 @@ class LoginForm extends React.Component {
             this.props.store.loginModalVisible = false;
             this.props.store.registerModalVisible = false;
             console.log(res);
-            this.props.store.email = values.email;
-            if (!localStorage) {
-              console.log("local storage is not available! ");
-            } else {
-              localStorage.setItem("x-auth", res.headers["x-auth"]);
-              console.log("store token in local storage success");
-            }
+            this.props.store.user = res.data;
           })
           .catch(err => {
             console.log("post login info have error");

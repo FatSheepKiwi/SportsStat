@@ -3,17 +3,18 @@ import { decorate, observable } from "mobx";
 class Store {
   playerData = [];
   playerStatistic = [];
-  teamBasicInfo = [];
+  teamBasicInfos = [];
   userPosts = [];
   userHeaders = [];
   userTopics = {};
   user = {};
+  team = {};
   loadingInfo = true;
+  playerRankStatistic = [];
 
   loginModalVisible = false;
   registerModalVisible = false;
   createTopicVisible = false;
-  email = "";
 }
 
 decorate(Store, {
@@ -28,7 +29,9 @@ decorate(Store, {
   userPosts: observable,
   userHeaders: observable,
   userTopics: observable,
-  user: observable
+  user: observable,
+  team: observable,
+  playerRankStatistic: observable
 });
 
 export default Store;

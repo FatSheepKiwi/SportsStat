@@ -121,12 +121,6 @@ class NavigationBar extends React.Component {
               Schedule
             </NavLink>
           </Menu.Item>
-          <Menu.Item key="Comment">
-            <NavLink to="/comment">
-              <Icon type="team" />
-              Comment
-            </NavLink>
-          </Menu.Item>
           <Menu.Item key="Topic">
             <NavLink to="/topic">
               <Icon type="team" />
