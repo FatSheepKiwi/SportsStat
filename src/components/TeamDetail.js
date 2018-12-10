@@ -2,6 +2,7 @@ import React from "react";
 import { observer, inject } from "mobx-react";
 import SportStatServer from "./../apis/sportStatServer";
 import { Row, Col, Icon } from "antd";
+import TeamTraditionalStat from "./TeamTraditionalStat";
 
 class TeamDetail extends React.Component {
   state = { loading: true };
@@ -92,6 +93,7 @@ class TeamDetail extends React.Component {
             </div>
           </Col>
         </Row>
+        <Row />
       </div>
     );
   }

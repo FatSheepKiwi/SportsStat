@@ -23,7 +23,14 @@ class Login extends React.Component {
   };
 
   render() {
-    const responseGoogle = response => {
+    const googleLoginSuccess = response => {
+      console.log(response.profileObj);
+      this.props.store.user = response.profileObj;
+      this.props.store.loginModalVisible = false;
+      this.props.store.registerModalVisible = false;
+    };
+
+    const googleLoginFailed = response => {
       console.log(response);
     };
     const WrappedLoginForm = Form.create()(LoginForm);
@@ -49,9 +56,8 @@ class Login extends React.Component {
           <GoogleLogin
             clientId="654921049052-m752jqhhpe529qssr10rpeghbj61s2uv.apps.googleusercontent.com"
             buttonText="LoginGoogle"
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
-            hostedDomain="http://localhost:5000/auth/google"
+            onSuccess={googleLoginSuccess}
+            onFailure={googleLoginFailed}
           />
         </Modal>
       </div>
