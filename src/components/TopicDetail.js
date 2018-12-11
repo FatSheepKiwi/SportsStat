@@ -166,6 +166,7 @@ class TopicDetail extends React.Component {
           author={<a>{topic.author.username}</a>}
           avatar={
             <Avatar
+              size="large"
               src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
               alt="Han Solo"
             />

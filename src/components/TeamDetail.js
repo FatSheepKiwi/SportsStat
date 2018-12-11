@@ -1,8 +1,9 @@
 import React from "react";
-import { observer, inject } from "mobx-react";
+import { observer, inject, Provider } from "mobx-react";
 import SportStatServer from "./../apis/sportStatServer";
 import { Row, Col, Icon } from "antd";
 import TeamTraditionalStat from "./TeamTraditionalStat";
+import TeamOverallStatGraph from "./TeamOverallStatGraph";
 
 class TeamDetail extends React.Component {
   state = { loading: true };
@@ -93,7 +94,19 @@ class TeamDetail extends React.Component {
             </div>
           </Col>
         </Row>
-        <Row />
+        <Row>
+          <Provider store={this.props.store}>
+            <TeamTraditionalStat />
+          </Provider>
+        </Row>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Provider store={this.props.store}>
+              <TeamOverallStatGraph />
+            </Provider>
+          </Col>
+          <Col span={12} />
+        </Row>
       </div>
     );
   }

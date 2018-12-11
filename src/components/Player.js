@@ -74,33 +74,21 @@ class Player extends React.Component {
       });
   };
 
-  //   fetchTeamBasicInfo = () => {
-  //     SportStatServer.get("/team")
-  //       .then(response => {
-  //         console.log(response.data);
-  //         this.props.store.teamBasicInfo = response.data;
-  //       })
-  //       .catch(function(err) {
-  //         console.log("error");
-  //         console.log(err);
-  //       });
-  //   };
+  // getTeamLogo = () => {
+  //   var url, teamAbbr;
+  //   this.props.store.playerStatistic.forEach(element => {
+  //     if (element.statType === "RegularSeason") {
+  //       teamAbbr = element.teamAbbreviation;
+  //     }
+  //   })
 
-  //   getTeamLogo = () => {
-  //     var url, teamAbbr;
-  //     this.props.store.playerStatistic.forEach(element => {
-  //       if (element.statType === "RegularSeason") {
-  //         teamAbbr = element.teamAbbreviation;
-  //       }
-  //     });
-
-  //     this.props.store.teamBasicInfo.forEach(element => {
-  //       if (element.teamAbbreviation === teamAbbr) {
-  //         url = element.teamLogoUrl;
-  //       }
-  //     });
-  //     return url;
-  //   };
+  //   this.props.store.teamBasicInfos.forEach(element => {
+  //     if (element.teamAbbreviation === teamAbbr) {
+  //       url = element.teamLogoUrl;
+  //     }
+  //   });
+  //   return url;
+  // }
 
   componentWillMount() {
     this.getPlayerInfo("Stephen Curry");
@@ -126,25 +114,20 @@ class Player extends React.Component {
       fontSize: "15px"
     };
     const imgStyle = {
-      paddingTop: 50,
-      background: "rgba(255,255,255,0.8)"
+      paddingTop: 20
+      // background: "rgba(255,255,255,0.8)"
     };
     const cardStyle = {
-      paddingTop: 38,
-      background: "rgba(255,255,255,0.8)"
+      paddingTop: 20
+      // background: "rgba(255,255,255,0.8)"
     };
     const performanceStyle = {
-      // paddingBottom: 10,
-      background: "rgba(255,255,255,0.8)"
+      // background: "rgba(255,255,255,0.8)"
     };
     const playerBasicInfoStyle = {
-      backgroundColor: "rgba(120, 120, 120, 0.9)",
-      backgroundImage:
-        "url(" +
-        "https://stats.nba.com/media/img/teams/logos/ATL_logo.svg" +
-        ")",
-      backgroundSize: "cover",
-      backgroundPosition: "50% 50%"
+      backgroundColor: "rgba(120, 120, 120, 0.2)"
+      // backgroundSize: "cover",
+      // backgroundPosition: "50% 50%",
     };
 
     return (
@@ -213,23 +196,21 @@ class Player extends React.Component {
           </Provider>
         </Row>
         <Row gutter={16} style={{ paddingTop: 10 }}>
-          <Col span={12}>
+          <Col span={12} style={{ paddingLeft: 20, paddingRight: 10 }}>
             <Provider store={this.props.store}>
               <PlayerCareerScore seasonState={this.state.seasonState} />
             </Provider>
           </Col>
-          <Col span={12}>
+          <Col span={12} style={{ paddingLeft: 10, paddingRight: 20 }}>
             <Provider store={this.props.store}>
               <PlayerLastThreeYearBasic seasonState={this.state.seasonState} />
             </Provider>
           </Col>
         </Row>
-        <Row gutter={16}>
-          <Col span={12}>
-            <Provider store={this.props.store}>
-              <PlayerPerValueGraph />
-            </Provider>
-          </Col>
+        <Row style={{ paddingLeft: 10, paddingRight: 10 }}>
+          <Provider store={this.props.store}>
+            <PlayerPerValueGraph />
+          </Provider>
         </Row>
         <Row>
           <Provider store={this.props.store}>

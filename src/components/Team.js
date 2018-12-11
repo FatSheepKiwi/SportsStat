@@ -1,6 +1,4 @@
 import React from "react";
-import { Row, Col } from "antd";
-import TeamLastThreeYearBasic from "./TeamLastThreeYearBasic";
 import { observer, inject, Provider } from "mobx-react";
 import TeamList from "./TeamList";
 import SportStatServer from "../apis/sportStatServer";
@@ -10,8 +8,8 @@ class Team extends React.Component {
   fetchTeamBasicInfo = () => {
     SportStatServer.get("/team")
       .then(results => {
-        this.setState({ loading: false });
         this.props.store.teamBasicInfos = results.data;
+        this.setState({ loading: false });
       })
       .catch(err => {
         console.log(err);
