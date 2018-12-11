@@ -92,6 +92,7 @@ class TeamOverallStatGraph extends React.Component {
   };
 
   componentDidMount() {
+    console.log(this.props.store.team.traditionalStat);
     this.setState({ traditionalStat: this.props.store.team.traditionalStat });
   }
 

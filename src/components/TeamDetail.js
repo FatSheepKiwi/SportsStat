@@ -14,6 +14,7 @@ class TeamDetail extends React.Component {
       .then(res => {
         if (!Array.isArray(res.data) || !res.data.length) {
           // array does not exist, is not an array, or is empty
+          // 呵呵
           return;
         }
         const basicInfo = res.data[0];
