@@ -150,7 +150,7 @@ class PlayerPerformance extends React.Component {
       },
       title: {
         display: true,
-        text: "Player Performance Chart",
+        text: "Performance",
         fontSize: 20
       },
       scale: {

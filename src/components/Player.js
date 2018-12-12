@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Card, Spin } from "antd";
+import { Row, Col, Card, Spin, message } from "antd";
 import { observer, inject, Provider } from "mobx-react";
 import SportStatServer from "../apis/sportStatServer";
 import PlayerDataTable from "./PlayerDataTable";
@@ -32,32 +32,29 @@ class Player extends React.Component {
     });
   };
 
-  getPlayerInfo = value => {
+  getPlayerInfoByID = playerID => {
     this.props.store.loading = true;
-    value = value.trim();
-    var url = "/player?playerName=" + value;
+    const url = "/player/" + playerID;
     SportStatServer.get(url)
       .then(response => {
-        console.log(response.data);
         this.props.store.playerData = response.data;
         this.props.store.loadingInfo = false;
-        this.getPlayerRankStat(this.props.store.playerData.playerID);
+        this.getPlayerRankStat(playerID);
       })
-      .catch(function(err) {
-        console.log("error");
+      .catch(err => {
         console.log(err);
+        message.error("Get player details failed, please retry...");
       });
 
-    // axios.defaults.withCredentials = true;
-    url = "/player/average?playerName=" + value;
-    SportStatServer.get(url)
+    const avg_url = "/player/average/" + playerID;
+    SportStatServer.get(avg_url)
       .then(response => {
         console.log(response.data);
         this.props.store.playerStatistic = response.data;
       })
       .catch(function(err) {
         console.log("error");
-        console.log(err);
+        message.error("Get player average stat failed, please retry...");
       });
   };
 
@@ -74,24 +71,10 @@ class Player extends React.Component {
       });
   };
 
-  // getTeamLogo = () => {
-  //   var url, teamAbbr;
-  //   this.props.store.playerStatistic.forEach(element => {
-  //     if (element.statType === "RegularSeason") {
-  //       teamAbbr = element.teamAbbreviation;
-  //     }
-  //   })
-
-  //   this.props.store.teamBasicInfos.forEach(element => {
-  //     if (element.teamAbbreviation === teamAbbr) {
-  //       url = element.teamLogoUrl;
-  //     }
-  //   });
-  //   return url;
-  // }
-
   componentWillMount() {
-    this.getPlayerInfo("Stephen Curry");
+    if (typeof this.props.match.params.playerID !== "undefined") {
+      this.getPlayerInfoByID(this.props.match.params.playerID);
+    }
     // this.fetchTeamBasicInfo();
   }
 
@@ -101,24 +84,24 @@ class Player extends React.Component {
     );
     const gridStyle = {
       width: "25%",
-      height: 25,
-      textAlign: "center",
+      height: 60,
       fontWeight: "bold",
-      fontSize: "15px"
+      textAlign: "center",
+      fontSize: "12px"
     };
     const gridStyleBig = {
       width: "50%",
-      height: 25,
+      height: 60,
       textAlign: "center",
       fontWeight: "bold",
       fontSize: "15px"
     };
     const imgStyle = {
-      paddingTop: 20
+      padding: 10
       // background: "rgba(255,255,255,0.8)"
     };
     const cardStyle = {
-      paddingTop: 20
+      //paddingTop: 20
       // background: "rgba(255,255,255,0.8)"
     };
     const performanceStyle = {
@@ -131,12 +114,13 @@ class Player extends React.Component {
     };
 
     return (
-      <div>
+      <div className="ui container">
         <Spin spinning={this.props.store.loadingInfo}>
           <Row style={playerBasicInfoStyle}>
-            <Col span={5} style={imgStyle}>
+            <Col span={6} style={imgStyle} xs={24} sm={6}>
               <img
                 src={this.props.store.playerData.playerImgUrl}
+                style={{ width: 260, height: 230 }}
                 alt={
                   this.props.store.playerData.playerFirstName +
                   " " +
@@ -144,8 +128,8 @@ class Player extends React.Component {
                 }
               />
             </Col>
-            <Col style={cardStyle} span={13}>
-              <Card title="Player Basic Info">
+            <Col style={cardStyle} span={12} xs={24} sm={12}>
+              <Card title="Player Basic Info" style={{ margin: 10 }}>
                 <Card.Grid style={gridStyle}>
                   {this.props.store.playerData.playerFirstName +
                     " " +
@@ -157,9 +141,7 @@ class Player extends React.Component {
                 <Card.Grid style={gridStyle}>
                   {"Position: " + this.props.store.playerData.playerPosition}{" "}
                 </Card.Grid>
-                <Card.Grid style={gridStyle}>
-                  {"Team: " + this.props.store.playerData.playerTeam}
-                </Card.Grid>
+
                 <Card.Grid style={gridStyle}>
                   {"Height: " + this.props.store.playerData.playerHeight}
                 </Card.Grid>
@@ -170,20 +152,20 @@ class Player extends React.Component {
                   {"DOB: " + DOB.toDateString()}
                 </Card.Grid>
                 <Card.Grid style={gridStyle}>
-                  {"Draft: " + this.props.store.playerData.playerDraft}
-                </Card.Grid>
-                <Card.Grid style={gridStyle}>
                   {"Age: " + this.props.store.playerData.playerAge}
                 </Card.Grid>
                 <Card.Grid style={gridStyle}>
                   {"Seasons: " + this.props.store.playerData.playerExperience}
                 </Card.Grid>
                 <Card.Grid style={gridStyleBig}>
+                  {"Team: " + this.props.store.playerData.playerTeam}
+                </Card.Grid>
+                <Card.Grid style={gridStyleBig}>
                   {"Prior: " + this.props.store.playerData.playerPrior}
                 </Card.Grid>
               </Card>
             </Col>
-            <Col style={performanceStyle} span={6}>
+            <Col style={performanceStyle} span={6} xs={24} sm={6}>
               <Provider store={this.props.store}>
                 <PlayerPerformance setSeasonState={this.setSeasonState} />
               </Provider>
