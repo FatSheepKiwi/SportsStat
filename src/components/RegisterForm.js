@@ -23,24 +23,28 @@ class RegisterForm extends React.Component {
   };
 
   handleSubmit = term => {
-    this.props.form.validateFields(async (err, values) => {
+    this.props.form.validateFields((err, values) => {
       if (!err) {
-        const response = SportStatServer.post("/user", {
+        SportStatServer.post("/user", {
           email: values.regemail,
           password: values.regpassword,
           username: values.username
         })
           .then(res => {
-            console.log(response);
             this.props.store.loginModalVisible = false;
             this.props.store.registerModalVisible = false;
-            this.props.store.email = values.email;
+            this.props.store.user = res.data;
+            this.reloadPage();
           })
           .catch(err => {
             console.log(err);
           });
       }
     });
+  };
+
+  reloadPage = () => {
+    window.location.reload();
   };
 
   validateToNextPassword = (rule, value, callback) => {
