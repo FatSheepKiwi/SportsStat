@@ -68,9 +68,9 @@ class NavigationBar extends React.Component {
   };
 
   displayUsername = () => {
-    console.log(this.state.user.email);
-    if (this.state.user.email) {
-      return this.state.user.email;
+    console.log(this.state.user.username);
+    if (this.state.user.username) {
+      return this.state.user.username;
     } else {
       return "welcome";
     }

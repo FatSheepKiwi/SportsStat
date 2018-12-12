@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Icon, Input, Button, Checkbox } from "antd";
+import { Form, Icon, Input, Button, Checkbox, message } from "antd";
 import { observer, inject, Provider } from "mobx-react";
 import SportStatServer from "../apis/sportStatServer";
 
@@ -28,7 +28,7 @@ class LoginForm extends React.Component {
           })
           .catch(err => {
             console.log("post login info have error");
-            console.log(err);
+            message.error("Login failed, please check your information.");
           });
       }
     });

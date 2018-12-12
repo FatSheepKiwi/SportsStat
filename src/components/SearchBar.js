@@ -56,6 +56,7 @@ class SearchBar extends React.Component {
         this.setState({
           playerNames: uniquePlayerNames
         });
+        this.props.store.playerNames = uniquePlayerNames;
       })
       .catch(function(err) {
         console.log("error");

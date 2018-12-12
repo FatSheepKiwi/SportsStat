@@ -18,6 +18,7 @@ import Home from "./components/Home";
 import Player from "./components/Player";
 import Team from "./components/Team";
 import Schedule from "./components/Schedule";
+import UserProfileDetail from "./components/UserProfileDetail";
 
 var store = new Store();
 
@@ -28,7 +29,8 @@ ReactDOM.render(
         <Switch>
           <Route path="/schedule" component={Schedule} />
           <Route path="/player" component={Player} />
-          <Route path="/user-profile" component={UserProfile} />
+          <Route path="/user-profile/edit" component={UserProfile} />
+          <Route path="/user-profile" component={UserProfileDetail} />
           <Route exact path="/comment" component={Comment} />
           <Route exact path="/create-topic" component={CreateTopic} />
           <Route exact path="/topic" component={Topic} />
