@@ -1,6 +1,7 @@
 import React from "react";
 import { observer, inject, Provider } from "mobx-react";
 import _ from "lodash";
+import { withRouter } from "react-router-dom";
 import {
   Upload,
   Icon,
@@ -40,6 +41,15 @@ class UserProfileForm extends React.Component {
     confirmDirty: false,
     autoCompleteResult: [],
     user: {}
+  };
+
+  loadUserProfilePage = () => {
+    this.props.history.push("/user-profile");
+    this.reloadPage();
+  };
+
+  reloadPage = () => {
+    window.location.reload();
   };
 
   fetchUser = () => {
@@ -87,6 +97,15 @@ class UserProfileForm extends React.Component {
       if (!err) {
         console.log("Received values of form: ", values);
       }
+      SportStatServer.put("/profile", values)
+        .then(res => {
+          message.info("update profile success!");
+          console.log(res);
+        })
+        .catch(err => {
+          message.error("profile update failed, please retry");
+          console.log(err);
+        });
     });
   };
 
@@ -110,8 +129,12 @@ class UserProfileForm extends React.Component {
     const user = this.state.user;
 
     const { getFieldDecorator } = this.props.form;
+    const { TextArea } = Input;
     const playerNames = _.map(this.props.store.playerNames, playerName => {
       return playerName.playerName;
+    });
+    const teamNames = _.map(this.props.store.teamNames, teamName => {
+      return teamName.teamName;
     });
 
     const formItemLayout = {
@@ -145,16 +168,6 @@ class UserProfileForm extends React.Component {
         </div>
         <div>
           <Form onSubmit={this.handleSubmit}>
-            <FormItem {...formItemLayout} label="E-mail">
-              {getFieldDecorator("email", {
-                rules: [
-                  {
-                    type: "email",
-                    message: "The input is not valid E-mail!"
-                  }
-                ]
-              })(<Input placeholder={user.email} />)}
-            </FormItem>
             <FormItem
               {...formItemLayout}
               label={
@@ -178,19 +191,42 @@ class UserProfileForm extends React.Component {
             </FormItem>
 
             <FormItem label="signature" {...formItemLayout}>
-              <Input placeholder={user.personalSignature} />
+              {getFieldDecorator("personalSignature")(
+                <TextArea rows={4} placeholder={user.personalSignature} />
+              )}
             </FormItem>
-            <FormItem {...formItemLayout} label="favorite team" hasFeedback>
-              {getFieldDecorator("favoriteTeam")(
-                <Select placeholder={user.favoriteTeam}>
-                  <Option value="china">China</Option>
-                  <Option value="usa">U.S.A</Option>
+            <FormItem {...formItemLayout} label="favorite team">
+              {getFieldDecorator("favoriteTeam", {
+                rules: [
+                  {
+                    max: 1,
+                    message: "Please only select one team",
+                    type: "array"
+                  }
+                ]
+              })(
+                <Select mode="multiple" placeholder={user.favoriteTeam}>
+                  {teamNames.map(teamName => {
+                    return (
+                      <Option value={teamName} key={teamName}>
+                        {teamName}
+                      </Option>
+                    );
+                  })}
                 </Select>
               )}
             </FormItem>
-            <FormItem {...formItemLayout} label="favorite player" hasFeedback>
-              {getFieldDecorator("favoritePlayer")(
-                <Select placeholder={user.favoritePlayer}>
+            <FormItem {...formItemLayout} label="favorite player">
+              {getFieldDecorator("favoritePlayer", {
+                rules: [
+                  {
+                    max: 1,
+                    message: "Please only select one player",
+                    type: "array"
+                  }
+                ]
+              })(
+                <Select mode="multiple" placeholder={user.favoritePlayer}>
                   {playerNames.map(playerName => {
                     return (
                       <Option value={playerName} key={playerName}>
@@ -201,10 +237,21 @@ class UserProfileForm extends React.Component {
                 </Select>
               )}
             </FormItem>
-            <FormItem wrapperCol={{ span: 12, offset: 5 }}>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
+            <FormItem>
+              <div>
+                <Button type="primary" htmlType="submit">
+                  <Icon type="edit" />
+                  Submit
+                </Button>
+                <Button
+                  onClick={this.loadUserProfilePage}
+                  htmlType="button"
+                  style={{ marginLeft: 10 }}
+                >
+                  <Icon type="rollback" />
+                  Back
+                </Button>
+              </div>
             </FormItem>
           </Form>
         </div>
@@ -214,4 +261,4 @@ class UserProfileForm extends React.Component {
 }
 
 UserProfileForm = inject("store")(observer(UserProfileForm));
-export default UserProfileForm;
+export default withRouter(UserProfileForm);
