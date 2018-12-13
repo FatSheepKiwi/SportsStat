@@ -158,7 +158,7 @@ class UserProfileForm extends React.Component {
             listType="picture-card"
             className="avatar-uploader"
             showUploadList={false}
-            action="http://localhost:5000/profile/avatar"
+            action="https://sport-stat-server.herokuapp.com/profile/avatar"
             beforeUpload={beforeUpload}
             onChange={this.handleChange}
             withCredentials={true}

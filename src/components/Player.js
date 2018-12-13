@@ -94,7 +94,7 @@ class Player extends React.Component {
       height: 60,
       textAlign: "center",
       fontWeight: "bold",
-      fontSize: "15px"
+      fontSize: "12px"
     };
     const imgStyle = {
       padding: 10
