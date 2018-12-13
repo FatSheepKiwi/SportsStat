@@ -180,7 +180,7 @@ class NavigationBar extends React.Component {
             }
             style={{ float: "right" }}
           >
-            <MenuItemGroup title="Item 1">
+            <MenuItemGroup title="Settings">
               <Menu.Item key="setting:1">{this.displayAuthItem()}</Menu.Item>
               <Menu.Item key="setting:2">
                 <NavLink to="/user-profile">

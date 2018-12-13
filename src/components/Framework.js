@@ -2,7 +2,7 @@ import React from "react";
 import { Layout } from "antd";
 import NavigationBar from "./NavigationBar";
 import { observer, inject, Provider } from "mobx-react";
-import Background from "./background.jpg";
+import Background from "./background.jpeg";
 import Login from "./Login";
 import Register from "./Register";
 
@@ -17,17 +17,11 @@ class Framework extends React.Component {
           style={{
             //background: '#001529 ',
             backgroundImage: "url(" + Background + ")",
+            backgroundSize: "100%",
             padding: 8,
-            height: 100
+            height: 60
           }}
-        >
-          <h1
-            className="ui center aligned header"
-            style={{ color: "#696969", opacity: 0.8 }}
-          >
-            Sport Stat
-          </h1>
-        </Header>
+        />
         <Provider store={this.props.store}>
           <NavigationBar />
         </Provider>

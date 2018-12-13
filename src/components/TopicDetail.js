@@ -1,26 +1,35 @@
 import React from "react";
 import { observer, inject, Provider } from "mobx-react";
 import SportStatServer from "../apis/sportStatServer";
-import { Comment, Icon, Button, Tooltip, Avatar } from "antd";
+import { Comment, Icon, Button, Tooltip, Avatar, message } from "antd";
 import moment from "moment";
 import { Link, withRouter } from "react-router-dom";
 import CommentDetail from "./CommentDetail";
 import AddComment from "./AddComment";
 
 class TopicDetail extends React.Component {
-  state = { topic: {}, liked: false, favorited: false, action: null };
+  state = {
+    topic: {},
+    liked: false,
+    favorited: false,
+    likes: 0,
+    favorites: 0,
+    action: null
+  };
 
   getTopicByID = topicID => {
     // console.log(topicID);
     const url = "/topic/" + topicID;
     SportStatServer.get(url)
       .then(res => {
-        console.log(res);
         const result = res.data;
+        // console.log(JSON.stringify(result, null, 2));
         this.setState({
           topic: result,
           liked: result.liked,
-          favorited: result.favorited
+          favorited: result.favorited,
+          likes: result.likes,
+          favorites: result.favorites
         });
       })
       .catch(err => {
@@ -71,9 +80,14 @@ class TopicDetail extends React.Component {
     }
     SportStatServer.post(`/topic/${this.state.topic._id}/like`)
       .then(result => {
-        this.setState({ liked: true });
+        this.setState({
+          liked: true,
+          likes: this.state.likes + 1
+        });
       })
-      .catch(err => {});
+      .catch(err => {
+        message.warn("like failed, please retry...");
+      });
   };
 
   favorite = () => {
@@ -82,7 +96,10 @@ class TopicDetail extends React.Component {
     }
     SportStatServer.post(`/topic/${this.state.topic._id}/favorite`)
       .then(result => {
-        this.setState({ favorited: true });
+        this.setState({
+          favorited: true,
+          favorites: this.state.favorites + 1
+        });
       })
       .catch(err => {});
   };
@@ -111,7 +128,7 @@ class TopicDetail extends React.Component {
   }
 
   render() {
-    const { topic, likes, dislikes, action } = this.state;
+    const { topic, likes, favorites } = this.state;
 
     const actions = [
       <span>
@@ -122,9 +139,7 @@ class TopicDetail extends React.Component {
             onClick={this.favorite}
           />
         </Tooltip>
-        <span style={{ paddingLeft: 8, cursor: "auto" }}>
-          {topic.favorites}
-        </span>
+        <span style={{ paddingLeft: 8, cursor: "auto" }}>{favorites}</span>
       </span>,
       <span>
         <Tooltip title="Like">
@@ -134,7 +149,7 @@ class TopicDetail extends React.Component {
             onClick={this.like}
           />
         </Tooltip>
-        <span style={{ paddingLeft: 8, cursor: "auto" }}>{topic.likes}</span>
+        <span style={{ paddingLeft: 8, cursor: "auto" }}>{likes}</span>
       </span>
     ];
 

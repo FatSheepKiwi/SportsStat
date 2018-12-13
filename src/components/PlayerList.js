@@ -59,10 +59,10 @@ class PlayerList extends React.Component {
             gutter: 16,
             xs: 1,
             sm: 2,
-            md: 4,
+            md: 3,
             lg: 4,
             xl: 4,
-            xxl: 3
+            xxl: 5
           }}
           size="large"
           pagination={{
