@@ -132,13 +132,13 @@ class NavigationBar extends React.Component {
           </Menu.Item>
           <Menu.Item key="home">
             <NavLink to="/">
-              <Icon type="book" />
+              <Icon type="home" />
               Home
             </NavLink>
           </Menu.Item>
           <Menu.Item key="players">
             <NavLink to="/player">
-              <Icon type="mail" />
+              <Icon type="user" />
               Players
             </NavLink>
           </Menu.Item>
@@ -150,13 +150,13 @@ class NavigationBar extends React.Component {
           </Menu.Item>
           <Menu.Item key="schedule">
             <NavLink to="/schedule">
-              <Icon type="smile" />
+              <Icon type="calendar" />
               Schedule
             </NavLink>
           </Menu.Item>
           <Menu.Item key="Topic">
             <NavLink to="/topic">
-              <Icon type="team" />
+              <Icon type="coffee" />
               Topic
             </NavLink>
           </Menu.Item>

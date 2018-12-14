@@ -14,7 +14,8 @@ class TopicDetail extends React.Component {
     favorited: false,
     likes: 0,
     favorites: 0,
-    action: null
+    action: null,
+    isAuthor: false
   };
 
   getTopicByID = topicID => {
@@ -31,6 +32,14 @@ class TopicDetail extends React.Component {
           likes: result.likes,
           favorites: result.favorites
         });
+        if (
+          typeof this.props.store.user === "undefined" ||
+          typeof this.state.topic === "undefined"
+        ) {
+          return;
+        } else if (this.props.store.user._id == this.state.topic.author._id) {
+          this.setState({ isAuthor: true });
+        }
       })
       .catch(err => {
         console.log(`fetch ${topicID} failed!`);
@@ -146,6 +155,25 @@ class TopicDetail extends React.Component {
     console.log(des);
   };
 
+  displayToolButton = () => {
+    if (this.state.isAuthor) {
+      return (
+        <div>
+          <Button
+            type="danger"
+            style={{ float: "right", margin: 10 }}
+            icon="close"
+            onClick={this.deleteTopic}
+          >
+            Delete
+          </Button>
+        </div>
+      );
+    } else {
+      return;
+    }
+  };
+
   getAuthorAvatar = avatar => {
     if (typeof avatar === "undefined" || avatar == "") {
       return "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png";
@@ -203,24 +231,8 @@ class TopicDetail extends React.Component {
         className="ui  container"
         style={{ backgroundColor: "#FFFFFF", padding: 20 }}
       >
-        <div>
-          <Button
-            type="primary"
-            icon="edit"
-            style={{ margin: 10 }}
-            onClick={this.updateTopic}
-          >
-            Update
-          </Button>
-          <Button
-            type="danger"
-            style={{ float: "right", margin: 10 }}
-            icon="close"
-            onClick={this.deleteTopic}
-          >
-            Delete
-          </Button>
-        </div>
+        <div>{this.displayToolButton()}</div>
+
         <Comment
           actions={actions}
           author={<a>{topic.author.username}</a>}

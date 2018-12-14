@@ -20,11 +20,11 @@ class FavoriteTopicList extends React.Component {
     SportStatServer.get("/topic/favorite-list")
       .then(response => {
         // console.log("topics : " + JSON.stringify(response.data, null, 2));
-        this.setState({ topics: response.data.favoriteTopics });
+        this.setState({ topics: response.data });
         this.props.store.userTopics = _.mapKeys(response.data, "_id");
       })
       .catch(err => {
-        if (err.response.status == 401) {
+        if (typeof err.response !== "undefined" && err.response.status == 401) {
           message.warn("Please Login first...");
         } else {
           console.log("get topic err");
@@ -38,6 +38,7 @@ class FavoriteTopicList extends React.Component {
   }
 
   getAuthorAvatar = avatar => {
+    console.log("avatar: " + avatar);
     if (typeof avatar === "undefined" || avatar == "") {
       return "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png";
     } else {

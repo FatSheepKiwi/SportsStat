@@ -1,6 +1,7 @@
 import React from "react";
 import { Row, Col, Card, Spin, message } from "antd";
 import { observer, inject, Provider } from "mobx-react";
+import { Link } from "react-router-dom";
 import SportStatServer from "../apis/sportStatServer";
 import PlayerDataTable from "./PlayerDataTable";
 import PlayerCareerScore from "./PlayerCareerScore";
@@ -37,6 +38,7 @@ class Player extends React.Component {
     const url = "/player/" + playerID;
     SportStatServer.get(url)
       .then(response => {
+        console.log(response.data);
         this.props.store.playerData = response.data;
         this.props.store.loadingInfo = false;
         this.getPlayerRankStat(playerID);
@@ -69,6 +71,10 @@ class Player extends React.Component {
         console.log("error");
         console.log(err);
       });
+  };
+
+  reloadPage = () => {
+    window.location.reload();
   };
 
   componentWillMount() {
@@ -155,7 +161,12 @@ class Player extends React.Component {
                   {"Seasons: " + this.props.store.playerData.playerExperience}
                 </Card.Grid>
                 <Card.Grid style={gridStyleBig}>
-                  {"Team: " + this.props.store.playerData.playerTeam}
+                  <Link
+                    to={`/team/${this.props.store.playerData.playerTeamID}`}
+                    onClick={this.reloadPage}
+                  >
+                    {"Team: " + this.props.store.playerData.playerTeam}
+                  </Link>
                 </Card.Grid>
                 <Card.Grid style={gridStyleBig}>
                   {"Prior: " + this.props.store.playerData.playerPrior}
@@ -173,22 +184,34 @@ class Player extends React.Component {
           </Row>
         </Spin>
         <Row gutter={16} style={{ paddingTop: 10 }}>
-          <Col span={12} style={{ paddingLeft: 20, paddingRight: 10 }}>
+          <Col
+            span={12}
+            sm={24}
+            md={12}
+            style={{ paddingLeft: 20, paddingRight: 10 }}
+          >
             <Provider store={this.props.store}>
               <PlayerCareerScore seasonState={this.state.seasonState} />
             </Provider>
           </Col>
-          <Col span={12} style={{ paddingLeft: 10, paddingRight: 20 }}>
+          <Col
+            span={12}
+            sm={24}
+            md={12}
+            style={{ paddingLeft: 10, paddingRight: 20 }}
+          >
             <Provider store={this.props.store}>
               <PlayerLastThreeYearBasic seasonState={this.state.seasonState} />
             </Provider>
           </Col>
         </Row>
+        <h3 class="ui dividing header" style={{ margin: 20 }} />
         <Row style={{ paddingLeft: 10, paddingRight: 10 }}>
           <Provider store={this.props.store}>
             <PlayerPerValueGraph />
           </Provider>
         </Row>
+        <h3 class="ui dividing header" style={{ margin: 20 }} />
         <Row>
           <Provider store={this.props.store}>
             <PlayerDataTable setSeasonState={this.setSeasonState} />
@@ -199,6 +222,7 @@ class Player extends React.Component {
             <PlayerRankTable setSeasonRankState={this.setSeasonRankState} />
           </Provider>
         </Row>
+        <h3 class="ui dividing header" style={{ margin: 20 }} />
         <Row style={{ paddingTop: 10 }}>
           <Provider store={this.props.store}>
             <PlayerRankLineGraph seasonRankState={this.state.seasonRankState} />

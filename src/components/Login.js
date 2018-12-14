@@ -11,7 +11,7 @@ class Login extends React.Component {
   };
 
   handleSubmit = () => {
-    SportStatServer.get("/auth/google/")
+    SportStatServer.get("/auth/google")
       .then(response => {
         this.props.store.loginModalVisible = false;
         this.props.store.registerModalVisible = false;
@@ -48,13 +48,6 @@ class Login extends React.Component {
           <Provider store={this.props.store}>
             <WrappedLoginForm />
           </Provider>
-
-          <GoogleLogin
-            clientId="654921049052-m752jqhhpe529qssr10rpeghbj61s2uv.apps.googleusercontent.com"
-            buttonText="LoginGoogle"
-            onSuccess={googleLoginSuccess}
-            onFailure={googleLoginFailed}
-          />
         </Modal>
       </div>
     );

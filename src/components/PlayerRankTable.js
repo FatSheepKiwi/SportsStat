@@ -159,9 +159,9 @@ class PlayerRankTable extends React.Component {
 
     return (
       <div>
-        <div style={{ textAlign: "center", fontWeight: "bold", fontSize: 40 }}>
-          <span>Player Rank Table</span>
-        </div>
+        <h3 class="ui dividing header" style={{ margin: 20 }}>
+          Player Rank Table
+        </h3>
         <div style={{ paddingTop: 10 }}>
           <div style={{ paddingBottom: 10 }}>
             <span style={{ paddingLeft: 10, fontWeight: "bold" }}>

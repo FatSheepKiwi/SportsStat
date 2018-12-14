@@ -1,12 +1,13 @@
 import React from "react";
 import { observer, inject, Provider } from "mobx-react";
 import SportStatServer from "./../apis/sportStatServer";
-import { Row, Col, Icon } from "antd";
+import { Row, Col, Icon, List, Card } from "antd";
+import { Link } from "react-router-dom";
 import TeamTraditionalStat from "./TeamTraditionalStat";
 import TeamOverallStatGraph from "./TeamOverallStatGraph";
 
 class TeamDetail extends React.Component {
-  state = { loading: true };
+  state = { loading: true, playersBio: [] };
 
   fetchTeamBasicInfo = teamID => {
     const url = "/team/" + teamID;
@@ -25,6 +26,21 @@ class TeamDetail extends React.Component {
       .catch(err => {
         console.log(err);
       });
+  };
+
+  fetchTeamPlayersBioInfo = teamID => {
+    const url = "/team/" + teamID + "/active-players";
+    SportStatServer.get(url)
+      .then(res => {
+        this.setState({ playersBio: res.data });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  reloadPage = () => {
+    window.location.reload();
   };
 
   fetchTeamTraditionalInfo = teamID => {
@@ -47,6 +63,7 @@ class TeamDetail extends React.Component {
     if (typeof this.props.match.params.teamID !== "undefined") {
       this.fetchTeamBasicInfo(this.props.match.params.teamID);
       this.fetchTeamTraditionalInfo(this.props.match.params.teamID);
+      this.fetchTeamPlayersBioInfo(this.props.match.params.teamID);
     }
   }
 
@@ -58,6 +75,7 @@ class TeamDetail extends React.Component {
     if (!basicInfo.teamName) {
       return <div> Sorry, data query failed, please Retry... </div>;
     }
+    const playersBio = this.state.playersBio;
     return (
       <div className="ui container">
         <Row style={{ backgroundColor: "#FFFAFA" }}>
@@ -96,6 +114,46 @@ class TeamDetail extends React.Component {
           </Col>
         </Row>
         <Row>
+          <h3 class="ui dividing header" style={{ margin: 20 }}>
+            Players
+          </h3>
+          <List
+            grid={{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 4 }}
+            dataSource={playersBio}
+            pagination={{
+              onChange: page => {
+                console.log(page);
+              },
+              pageSize: 4
+            }}
+            renderItem={item => (
+              <List.Item>
+                <Card
+                  title={item.title}
+                  cover={
+                    <img
+                      alt="player img"
+                      style={{ width: "100%", height: 200 }}
+                      src={item.playerImgUrl}
+                    />
+                  }
+                >
+                  <Link
+                    to={`/player/${item.playerID}`}
+                    onClick={this.reloadPage}
+                  >
+                    {item.playerName}
+                  </Link>
+                  {` Age: ${item.playerAge}`}
+                </Card>
+              </List.Item>
+            )}
+          />
+        </Row>
+        <Row>
+          <h3 class="ui dividing header" style={{ margin: 20 }}>
+            Team Traditional Stat
+          </h3>
           <Provider store={this.props.store}>
             <TeamTraditionalStat />
           </Provider>
