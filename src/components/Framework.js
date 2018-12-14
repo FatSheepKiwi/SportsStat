@@ -19,7 +19,7 @@ class Framework extends React.Component {
             backgroundImage: "url(" + Background + ")",
             backgroundSize: "100%",
             padding: 8,
-            height: 60
+            height: 40
           }}
         />
         <Provider store={this.props.store}>
