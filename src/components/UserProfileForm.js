@@ -76,7 +76,9 @@ class UserProfileForm extends React.Component {
           loading: false
         })
       );
-      message.success("upload avatar success!");
+      message.success(
+        "upload avatar success! Please wait a moment to get lastest avatar..."
+      );
       console.log("response: " + JSON.stringify(info.file.response, null, 2));
     } else if (info.file.status === "error") {
       if (info.file.error.status == "401") {
@@ -151,23 +153,40 @@ class UserProfileForm extends React.Component {
     return (
       <div className="ui text container">
         <div>
-          <span>Upload Avatar:</span>
-          <Upload
-            accept="image/*"
-            name="avatar"
-            listType="picture-card"
-            className="avatar-uploader"
-            showUploadList={false}
-            action="https://sport-stat-server.herokuapp.com/profile/avatar"
-            beforeUpload={beforeUpload}
-            onChange={this.handleChange}
-            withCredentials={true}
-          >
-            {imageUrl ? <img src={imageUrl} alt="avatar" /> : uploadButton}
-          </Upload>
+          <h3 class="ui dividing header" style={{ margin: 20 }}>
+            Edit Profile
+          </h3>
         </div>
-        <div>
+        <div style={{ margin: 20 }}>
           <Form onSubmit={this.handleSubmit}>
+            <FormItem label="upload avatar" {...formItemLayout}>
+              {
+                <div>
+                  <Upload
+                    accept="image/*"
+                    name="avatar"
+                    listType="picture-card"
+                    className="avatar-uploader"
+                    showUploadList={false}
+                    action="https://sport-stat-server.herokuapp.com/profile/avatar"
+                    beforeUpload={beforeUpload}
+                    onChange={this.handleChange}
+                    withCredentials={true}
+                  >
+                    {imageUrl ? (
+                      <img
+                        src={imageUrl}
+                        alt="avatar"
+                        width={126}
+                        height={126}
+                      />
+                    ) : (
+                      uploadButton
+                    )}
+                  </Upload>
+                </div>
+              }
+            </FormItem>
             <FormItem
               {...formItemLayout}
               label={
