@@ -4,19 +4,6 @@ import { observer, inject, Provider } from "mobx-react";
 import { Link } from "react-router-dom";
 import SportStatServer from "./../apis/sportStatServer";
 
-const listData = [];
-for (let i = 0; i < 23; i++) {
-  listData.push({
-    href: "http://ant.design",
-    title: `ant design part ${i}`,
-    avatar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-    description:
-      "Ant Design, a design language for background applications, is refined by Ant UED Team.",
-    content:
-      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently."
-  });
-}
-
 class PlayerList extends React.Component {
   state = { playerBios: [], loading: true };
 
@@ -62,7 +49,7 @@ class PlayerList extends React.Component {
             md: 3,
             lg: 4,
             xl: 4,
-            xxl: 5
+            xxl: 4
           }}
           size="large"
           pagination={{
@@ -80,11 +67,11 @@ class PlayerList extends React.Component {
           renderItem={item => (
             <List.Item key={item.playerID}>
               <Card
-                style={{ width: 240, height: 340 }}
+                style={{ width: 240, height: 315 }}
                 cover={
                   <img
                     alt="player img"
-                    style={{ width: 240, height: 240 }}
+                    style={{ width: 240, height: 175 }}
                     src={item.playerImgUrl}
                   />
                 }
@@ -101,7 +88,8 @@ class PlayerList extends React.Component {
                 <Meta
                   title={item.playerName}
                   description={
-                    `Team ` + item.playerTeam ? item.playerTeam : `Data Missing`
+                    `Team ` +
+                    (item.playerTeam ? item.playerTeam : `Data Missing`)
                   }
                 />
               </Card>

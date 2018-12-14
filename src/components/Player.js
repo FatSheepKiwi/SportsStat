@@ -97,30 +97,27 @@ class Player extends React.Component {
       fontSize: "12px"
     };
     const imgStyle = {
-      padding: 10
-      // background: "rgba(255,255,255,0.8)"
+      paddingTop: 40
     };
     const cardStyle = {
       //paddingTop: 20
       // background: "rgba(255,255,255,0.8)"
     };
     const performanceStyle = {
-      // background: "rgba(255,255,255,0.8)"
+      paddingTop: 40
     };
     const playerBasicInfoStyle = {
       backgroundColor: "rgba(120, 120, 120, 0.2)"
-      // backgroundSize: "cover",
-      // backgroundPosition: "50% 50%",
     };
 
     return (
       <div className="ui container">
         <Spin spinning={this.props.store.loadingInfo}>
           <Row style={playerBasicInfoStyle}>
-            <Col span={6} style={imgStyle} xs={24} sm={6}>
+            <Col span={5} style={imgStyle} xs={24} sm={6}>
               <img
                 src={this.props.store.playerData.playerImgUrl}
-                style={{ width: 260, height: 230 }}
+                style={{ width: 260, height: 190 }}
                 alt={
                   this.props.store.playerData.playerFirstName +
                   " " +
@@ -128,7 +125,7 @@ class Player extends React.Component {
                 }
               />
             </Col>
-            <Col style={cardStyle} span={12} xs={24} sm={12}>
+            <Col style={cardStyle} span={11} xs={24} sm={12}>
               <Card title="Player Basic Info" style={{ margin: 10 }}>
                 <Card.Grid style={gridStyle}>
                   {this.props.store.playerData.playerFirstName +
@@ -165,18 +162,16 @@ class Player extends React.Component {
                 </Card.Grid>
               </Card>
             </Col>
-            <Col style={performanceStyle} span={6} xs={24} sm={6}>
+            <Col style={performanceStyle} span={8} xs={24} sm={6}>
+              <div style={{ textAlign: "center", fontSize: 20 }}>
+                <span>Player Radar</span>
+              </div>
               <Provider store={this.props.store}>
                 <PlayerPerformance setSeasonState={this.setSeasonState} />
               </Provider>
             </Col>
           </Row>
         </Spin>
-        <Row>
-          <Provider store={this.props.store}>
-            <PlayerDataTable setSeasonState={this.setSeasonState} />
-          </Provider>
-        </Row>
         <Row gutter={16} style={{ paddingTop: 10 }}>
           <Col span={12} style={{ paddingLeft: 20, paddingRight: 10 }}>
             <Provider store={this.props.store}>
@@ -192,6 +187,11 @@ class Player extends React.Component {
         <Row style={{ paddingLeft: 10, paddingRight: 10 }}>
           <Provider store={this.props.store}>
             <PlayerPerValueGraph />
+          </Provider>
+        </Row>
+        <Row>
+          <Provider store={this.props.store}>
+            <PlayerDataTable setSeasonState={this.setSeasonState} />
           </Provider>
         </Row>
         <Row>
