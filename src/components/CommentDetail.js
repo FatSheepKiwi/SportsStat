@@ -1,30 +1,44 @@
 import React from "react";
 import PostList from "./PostList";
 import { observer, inject, Provider } from "mobx-react";
-import { Comment, Avatar } from "antd";
+import { Comment, Avatar, Tooltip } from "antd";
 import _ from "lodash";
+import moment from "moment";
 
 class CommentDetail extends React.Component {
+  getAuthorAvatar = avatar => {
+    if (typeof avatar === "undefined" || avatar == "") {
+      return "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png";
+    } else {
+      return avatar;
+    }
+  };
+
   render() {
     const comment = this.props.comment;
     if (!comment) return <div>loading</div>;
     return (
       <div>
         <Comment
-          actions={[<span>Reply to</span>]}
           author={<a>{comment.author.username}</a>}
+          datetime={
+            <Tooltip title={moment().format("YYYY-MM-DD HH:mm:ss")}>
+              <span>{moment().from(comment.date)}</span>
+            </Tooltip>
+          }
           avatar={
             <Avatar
-              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              alt="Han Solo"
+              size="large"
+              src={this.getAuthorAvatar(comment.author.avatar)}
+              alt="author avatar"
             />
           }
           content={
             <p>
               {comment.content}
               <br />
-              We supply a series of design principles, practical patterns and
-              high quality design resources (Sketch and Axure).
+              <br />
+              Signature: {comment.author.personalSignature}
             </p>
           }
         >
