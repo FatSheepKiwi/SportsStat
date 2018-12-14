@@ -1,7 +1,7 @@
 import React from "react";
 import { observer, inject, Provider } from "mobx-react";
 import SportStatServer from "../apis/sportStatServer";
-import { Comment, Icon, Button, Tooltip, Avatar, message } from "antd";
+import { Comment, Icon, Button, Tooltip, Avatar, message, Spin } from "antd";
 import moment from "moment";
 import { Link, withRouter } from "react-router-dom";
 import CommentDetail from "./CommentDetail";
@@ -34,25 +34,37 @@ class TopicDetail extends React.Component {
       })
       .catch(err => {
         console.log(`fetch ${topicID} failed!`);
-        console.log(err);
+        if (err.response.status == 404) {
+          message.warn("This Topic No Longer Exists...");
+        } else {
+          console.log(err);
+        }
       });
   };
 
   deleteTopic = () => {
     if (!this.state.topic._id) {
       console.log("nothing to delete!");
+      message.warn("Please login first");
       return;
     }
     const url = `/topic/${this.state.topic._id}`;
     SportStatServer.delete(url)
       .then(res => {
         console.log("success delete topic" + this.state.topic._id);
+        message.info("success delete topic" + this.state.topic._id);
+        this.props.history.push("/topic");
+        this.reloadPage();
       })
       .catch(err => {
         console.log(err);
         if (err.response.status == 401) {
           this.setState.toLogin = true;
           this.props.store.loginModalVisible = this.state.toLogin;
+        } else if (err.response.status == 403) {
+          message.warn("Only author has permission...");
+        } else {
+          message.warn("Delete failed, please retry");
         }
       });
   };
@@ -61,8 +73,8 @@ class TopicDetail extends React.Component {
     if (typeof this.state.topic.comments[0] === "undefined") return;
     // console.log("passed comment is : " + this.state.topic.comments[0]);
     return (
-      <div>
-        <p>Comments</p>
+      <div className="ui comments">
+        <h3 className="ui dividing header ">Comments</h3>
         {this.state.topic.comments.map(comment => {
           return <CommentDetail comment={comment} key={comment._id} />;
         })}
@@ -80,13 +92,18 @@ class TopicDetail extends React.Component {
     }
     SportStatServer.post(`/topic/${this.state.topic._id}/like`)
       .then(result => {
+        // console.log(result);
         this.setState({
           liked: true,
           likes: this.state.likes + 1
         });
       })
       .catch(err => {
-        message.warn("like failed, please retry...");
+        if (err.response.status == 401) {
+          message.warn("Please Login first...");
+        } else {
+          message.warn("like failed, please retry...");
+        }
       });
   };
 
@@ -96,12 +113,19 @@ class TopicDetail extends React.Component {
     }
     SportStatServer.post(`/topic/${this.state.topic._id}/favorite`)
       .then(result => {
+        // console.log(result);
         this.setState({
           favorited: true,
           favorites: this.state.favorites + 1
         });
       })
-      .catch(err => {});
+      .catch(err => {
+        if (err.response.status == 401) {
+          message.warn("Please Login first...");
+        } else {
+          message.warn("favorite failed, please retry...");
+        }
+      });
   };
 
   routeBack = () => {};
@@ -120,6 +144,14 @@ class TopicDetail extends React.Component {
       des += name + ":" + obj[name] + ";";
     }
     console.log(des);
+  };
+
+  getAuthorAvatar = avatar => {
+    if (typeof avatar === "undefined" || avatar == "") {
+      return "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png";
+    } else {
+      return avatar;
+    }
   };
 
   componentWillMount() {
@@ -155,9 +187,22 @@ class TopicDetail extends React.Component {
 
     // console.log(topic.date);
 
-    if (!topic.author) return <div>loading</div>;
+    if (!topic.author)
+      return (
+        <div className="ui segment">
+          <p />
+          <p />
+          <p />
+          <div className="ui active inverted dimmer">
+            <div className="ui large text loader">Loading</div>
+          </div>
+        </div>
+      );
     return (
-      <div className="ui container">
+      <div
+        className="ui  container"
+        style={{ backgroundColor: "#FFFFFF", padding: 20 }}
+      >
         <div>
           <Button
             type="primary"
@@ -182,8 +227,8 @@ class TopicDetail extends React.Component {
           avatar={
             <Avatar
               size="large"
-              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              alt="Han Solo"
+              src={this.getAuthorAvatar(topic.author.avatar)}
+              alt="author avatar"
             />
           }
           content={
@@ -192,11 +237,10 @@ class TopicDetail extends React.Component {
               <p>
                 {topic.content}
                 <br />
-                We supply a series of design principles, practical patterns and
-                high quality design resources (Sketch and Axure), to help people
-                create their product prototypes beautifully and efficiently.
+                <br />
+                Signature: {topic.author.personalSignature}
               </p>
-              <div>{topic.desc}</div>
+              <div>Desc: {topic.desc}</div>
             </div>
           }
           datetime={
@@ -211,7 +255,7 @@ class TopicDetail extends React.Component {
           </div>
         </Provider>
         <Provider store={this.props.store}>
-          <div className="ui container">
+          <div className="ui comments">
             <AddComment topic_id={topic._id} />
           </div>
         </Provider>
@@ -228,4 +272,4 @@ class TopicDetail extends React.Component {
 }
 
 TopicDetail = inject("store")(observer(TopicDetail));
-export default TopicDetail;
+export default withRouter(TopicDetail);

@@ -20,6 +20,7 @@ import Team from "./components/Team";
 import Schedule from "./components/Schedule";
 import UserProfileDetail from "./components/UserProfileDetail";
 import PlayerList from "./components/PlayerList";
+import FavoriteTopicList from "./components/FavoriteTopicList";
 
 var store = new Store();
 
@@ -36,6 +37,11 @@ ReactDOM.render(
           <Route exact path="/comment" component={Comment} />
           <Route exact path="/create-topic" component={CreateTopic} />
           <Route exact path="/topic" component={Topic} />
+          <Route
+            exact
+            path="/topic/favorite-list"
+            component={FavoriteTopicList}
+          />
           <Route exact path="/topic/:id" component={TopicDetail} />
           <Route exact path="/team" component={Team} />
           <Route path="/team/:teamID" component={TeamDetail} />

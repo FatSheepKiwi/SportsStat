@@ -26,6 +26,16 @@ class Topic extends React.Component {
             Create Topic
           </Button>
         </Link>
+        <Link to="/topic/favorite-list">
+          <Button
+            type="primary"
+            style={{ margin: 20 }}
+            icon="star-o"
+            onClick={this.reloadPage}
+          >
+            Favorite Topics
+          </Button>
+        </Link>
         <Provider store={this.props.store}>
           <TopicList />
         </Provider>

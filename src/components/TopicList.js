@@ -1,24 +1,9 @@
 import React from "react";
-import { List, Avatar, Icon } from "antd";
+import { List, Avatar, Icon, message } from "antd";
 import { observer, inject, Provider } from "mobx-react";
-import faker from "faker";
 import SportStatServer from "../apis/sportStatServer";
 import { Link } from "react-router-dom";
 import _ from "lodash";
-import TopicDetail from "./TopicDetail";
-
-const listData = [];
-for (let i = 0; i < 23; i++) {
-  listData.push({
-    href: `${faker.image.image()}`,
-    title: `ant design part ${i}`,
-    avatar: `${faker.image.sports()}`,
-    description:
-      "Ant Design, a design language for background applications, is refined by Ant UED Team.",
-    content:
-      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently."
-  });
-}
 
 const IconText = ({ type, text }) => (
   <span>
@@ -34,14 +19,14 @@ class TopicList extends React.Component {
   getTopics() {
     SportStatServer.get("/topic")
       .then(response => {
-        console.log("after get topic");
+        // console.log("topic 0: " + JSON.stringify(response.data[0], null, 2));
         this.setState({ topics: response.data });
         this.props.store.userTopics = _.mapKeys(response.data, "_id");
         // this.ShowTheObject(this.props.store.userTopics);
       })
       .catch(err => {
         console.log("get topic err");
-        console.log(err);
+        message.warn("Get topics failed, please retry...");
       });
   }
 
@@ -57,6 +42,14 @@ class TopicList extends React.Component {
     console.log("before get tpics");
     this.getTopics();
   }
+
+  getAuthorAvatar = avatar => {
+    if (typeof avatar === "undefined" || avatar == "") {
+      return "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png";
+    } else {
+      return avatar;
+    }
+  };
 
   getDate = str_date => {
     var date = new Date(str_date);
@@ -82,16 +75,16 @@ class TopicList extends React.Component {
         dataSource={this.state.topics}
         footer={
           <div>
-            <b>Topics</b> footer part
+            <b>Topics</b>
           </div>
         }
         renderItem={item => (
           <List.Item
             key={item.title}
             actions={[
-              <IconText type="star-o" text="156" />,
-              <IconText type="like-o" text="156" />,
-              <IconText type="message" text="2" />
+              <IconText type="star-o" text={item.favorites} />,
+              <IconText type="like-o" text={item.likes} />,
+              <IconText type="message" text={item.commentCounter} />
             ]}
             extra={
               <div className="date ui label">
@@ -101,10 +94,10 @@ class TopicList extends React.Component {
             }
           >
             <List.Item.Meta
-              avatar={<Avatar src={faker.image.avatar()} />}
+              avatar={<Avatar src={this.getAuthorAvatar(item.author.avatar)} />}
               title={
                 <div className="content">
-                  <Link to={`topic/${item._id}`} onClick={this.reloadPage}>
+                  <Link to={`/topic/${item._id}`} onClick={this.reloadPage}>
                     {item.title}
                   </Link>
                 </div>
