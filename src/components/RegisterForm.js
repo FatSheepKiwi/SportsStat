@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Icon, Input, Button, Checkbox } from "antd";
+import { Form, Icon, Input, Button, message } from "antd";
 import { observer, inject, Provider } from "mobx-react";
 import SportStatServer from "./../apis/sportStatServer";
 
@@ -34,10 +34,18 @@ class RegisterForm extends React.Component {
             this.props.store.loginModalVisible = false;
             this.props.store.registerModalVisible = false;
             this.props.store.user = res.data;
+            // console.log(res.data);
             this.reloadPage();
           })
           .catch(err => {
-            console.log(err);
+            if (err.response.status === 409) {
+              message.warn(
+                "This Email is already registered, please use another email"
+              );
+            } else {
+              console.log(err);
+              message.warn("Register failed, please retry...");
+            }
           });
       }
     });

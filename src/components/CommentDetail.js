@@ -1,6 +1,5 @@
 import React from "react";
-import PostList from "./PostList";
-import { observer, inject, Provider } from "mobx-react";
+import { observer, inject } from "mobx-react";
 import { Comment, Avatar, Tooltip } from "antd";
 import _ from "lodash";
 import moment from "moment";
