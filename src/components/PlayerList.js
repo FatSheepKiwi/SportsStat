@@ -17,6 +17,14 @@ class PlayerList extends React.Component {
       });
   };
 
+  getTeamName = item => {
+    if (typeof item.playerTeam === "undefined" || item.playerTeam === " ") {
+      return "Data Missing";
+    } else {
+      return item.playerTeam;
+    }
+  };
+
   reloadPage = () => {
     window.location.reload();
   };
@@ -67,7 +75,7 @@ class PlayerList extends React.Component {
           renderItem={item => (
             <List.Item key={item.playerID}>
               <Card
-                style={{ width: 240, height: 315 }}
+                style={{ width: 240, height: 330 }}
                 cover={
                   <img
                     alt="player img"
@@ -87,10 +95,7 @@ class PlayerList extends React.Component {
               >
                 <Meta
                   title={item.playerName}
-                  description={
-                    `Team ` +
-                    (item.playerTeam ? item.playerTeam : `Data Missing`)
-                  }
+                  description={this.getTeamName(item)}
                 />
               </Card>
             </List.Item>

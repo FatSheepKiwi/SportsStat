@@ -149,7 +149,7 @@ class PlayerPerformance extends React.Component {
         display: false
       },
       title: {
-        display: true,
+        display: false,
         text: "Performance",
         fontSize: 20
       },

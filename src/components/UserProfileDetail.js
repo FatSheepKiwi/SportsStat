@@ -64,7 +64,7 @@ class UserProfileDetail extends React.Component {
             </Card>
           </Sider>
           <Layout style={{ marginLeft: 50 }}>
-            <Header style={{ opacity: 0.25, backgroundColor: "#ffffff" }}>
+            <Header style={{ opacity: 0.9, backgroundColor: "#ffffff" }}>
               <h1
                 style={{ color: "#000000", margin: 10 }}
                 className="ui center aligned header"
@@ -91,7 +91,7 @@ class UserProfileDetail extends React.Component {
                 </div>
               </div>
             </Content>
-            <Footer />
+            <Footer style={{ backgroundColor: "#ffffff", opacity: 0.8 }} />
           </Layout>
         </Layout>
       </div>
