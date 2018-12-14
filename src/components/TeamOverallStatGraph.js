@@ -4,6 +4,7 @@ import { observer, inject, Provider } from "mobx-react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { element } from "prop-types";
+import SportStatServer from "../apis/sportStatServer";
 
 const TABS = [
   "WP",
@@ -91,9 +92,24 @@ class TeamOverallStatGraph extends React.Component {
     }));
   };
 
+  fetchTeamTraditionalInfo = teamID => {
+    const url = "/team/traditional-stat/" + teamID;
+    SportStatServer.get(url)
+      .then(res => {
+        if (!Array.isArray(res.data) || !res.data.length) {
+          // array does not exist, is not an array, or is empty
+          return;
+        }
+        this.setState({ traditionalStat: res.data });
+        // console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   componentDidMount() {
-    console.log(this.props.store.team.traditionalStat);
-    this.setState({ traditionalStat: this.props.store.team.traditionalStat });
+    this.fetchTeamTraditionalInfo(this.props.teamID);
   }
 
   render() {
@@ -173,9 +189,7 @@ class TeamOverallStatGraph extends React.Component {
           </Select>
         </div>
         <div>
-          <Spin spinning={this.props.store.loadingInfo}>
-            <HighchartsReact highcharts={Highcharts} options={options} />
-          </Spin>
+          <HighchartsReact highcharts={Highcharts} options={options} />
         </div>
       </div>
     );

@@ -149,6 +149,7 @@ class Home extends React.Component {
               </Card>
             </Col>
           </Row>
+          <h3 class="ui dividing header" style={{ margin: 20 }} />
           <Row gutter={16}>
             <Col span={12} sm={24} md={12}>
               <ScatterPlotMINPTS />
@@ -157,6 +158,7 @@ class Home extends React.Component {
               <ScatterPlotPTS3PA />
             </Col>
           </Row>
+          <h3 class="ui dividing header" style={{ margin: 20 }} />
           <Row gutter={16}>
             <Col span={12} sm={24} md={12}>
               <ScatterPlotFGAEFF />

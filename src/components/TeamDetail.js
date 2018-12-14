@@ -15,13 +15,12 @@ class TeamDetail extends React.Component {
       .then(res => {
         if (!Array.isArray(res.data) || !res.data.length) {
           // array does not exist, is not an array, or is empty
-          // 呵呵
           return;
         }
         const basicInfo = res.data[0];
         this.props.store.team.basicInfo = basicInfo;
         this.setState({ loading: false });
-        console.log(basicInfo);
+        // console.log(basicInfo);
       })
       .catch(err => {
         console.log(err);
@@ -52,7 +51,7 @@ class TeamDetail extends React.Component {
           return;
         }
         this.props.store.team.traditionalStat = res.data;
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch(err => {
         console.log(err);
@@ -159,12 +158,14 @@ class TeamDetail extends React.Component {
           </Provider>
         </Row>
         <Row gutter={16}>
-          <Col span={12}>
+          <Col span={24}>
             <Provider store={this.props.store}>
-              <TeamOverallStatGraph />
+              <TeamOverallStatGraph
+                traditionalStat={traditionalStat}
+                teamID={basicInfo.teamID}
+              />
             </Provider>
           </Col>
-          <Col span={12} />
         </Row>
       </div>
     );
